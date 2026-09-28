@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Raw / large datasets
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*.csv
+data/processed/*.tsv
+data/processed/*.gz
+
+# Models
+results/models/*.pkl
+results/models/*.joblib
+
+# Unity
+unity/Library/
+unity/Temp/
+unity/Logs/
+unity/Obj/
+unity/UserSettings/
+unity/Build/
+unity/Builds/
+
+# OS
+.DS_Store
+Thumbs.db
+
