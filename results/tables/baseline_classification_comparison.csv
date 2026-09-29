@@ -1,0 +1,3 @@
+Model,CV_Accuracy,CV_Macro_F1,CV_Balanced_Accuracy
+DummyClassifier,0.262016,0.051903,0.125000
+LogisticRegression,0.869767,0.858007,0.845720
