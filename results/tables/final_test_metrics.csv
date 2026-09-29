@@ -1,0 +1,6 @@
+Metric,Value
+Accuracy,0.858025
+Macro_F1,0.850801
+Balanced_Accuracy,0.845961
+Macro_Precision,0.867167
+Macro_Recall,0.845961

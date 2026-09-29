@@ -1,0 +1,2 @@
+TrainSamples,GenesBeforeFiltering,GenesAfterVarianceFilter,PCAComponents,PCAExplainedVariancePercent,PCASilhouette,UMAPSilhouette
+645,19215,19198,50,53.803028,0.034566,0.014002

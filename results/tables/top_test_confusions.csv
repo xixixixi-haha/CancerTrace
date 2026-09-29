@@ -1,0 +1,11 @@
+TrueClass,PredictedClass,ErrorCount
+Bowel,Esophagus/Stomach,2
+Breast,Esophagus/Stomach,2
+Breast,Lung,2
+Esophagus/Stomach,Lung,2
+Lung,Bowel,2
+Lung,Esophagus/Stomach,2
+Skin,Bone,2
+Bone,CNS/Brain,1
+Bowel,Skin,1
+CNS/Brain,Bone,1
