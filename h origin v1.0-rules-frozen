@@ -1,0 +1,147 @@
+[33mtag v1.0-rules-frozen[m
+Tagger: xixixixi-haha <2029200038@qq.com>
+Date:   Sat Oct 3 11:29:42 2026 +0800
+
+CancerTrace v1.0 rules frozen before Unity implementation
+
+[33mcommit 2db640076937d3415c032ac185aafd54950c1217[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;33mtag: [m[1;33mv1.0-rules-frozen[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: xixixixi-haha <2029200038@qq.com>
+Date:   Sat Oct 3 11:29:19 2026 +0800
+
+    完成 CancerTrace v1.0 规则冻结、数据对齐与基础素材整理
+    
+    完成 CancerTrace v1.0 开发前基础阶段整理，包括：
+    
+    - 冻结核心玩法规则与边界规则
+    - 统一 GDD 与各系统设计文档
+    - 建立正式 Data_Structure 数据契约
+    - 对齐 Stage 08 配置导出器
+    - 保持病例、AI、基因线索和 Galaxy 科学数据不变
+    - 整理已有 UI、角色、图标、面板、按钮等美术素材
+    - 完善 Unity 项目和 Docs 目录结构
+    
+    该版本作为后续 Unity 正式开发的稳定基线。
+
+ .gitignore                                         |   16 [32m+[m
+ python/src/08_export_game_data.py                  |   39 [32m+[m[31m-[m
+ results/game_data/game_config.json                 |   41 [32m+[m[31m-[m
+ .../Assets/Art/Background/.gitkeep                 |    1 [32m+[m
+ .../Assets/Art/Background/SharedBackground.png     |  Bin [31m0[m -> [32m2599807[m bytes
+ .../Assets/Art/Background/bg_mainmenu.png.png      |  Bin [31m0[m -> [32m2360241[m bytes
+ .../CancerTraceClient/Assets/Art/Biology/.gitkeep  |    1 [32m+[m
+ unity/CancerTraceClient/Assets/Art/Cells/.gitkeep  |    1 [32m+[m
+ .../Assets/Art/Character/.gitkeep                  |    1 [32m+[m
+ .../CatAssistant/char_cat_assistant_idle.png       |  Bin [31m0[m -> [32m1459412[m bytes
+ .../Art/Character/CatAssistant/char_cat_happy.png  |  Bin [31m0[m -> [32m1505917[m bytes
+ .../Art/Character/CatAssistant/char_cat_hint.png   |  Bin [31m0[m -> [32m1428232[m bytes
+ .../Art/Character/CatAssistant/char_cat_idle.png   |  Bin [31m0[m -> [32m1389868[m bytes
+ .../Art/Character/CatAssistant/char_cat_sleep.png  |  Bin [31m0[m -> [32m1297724[m bytes
+ .../Character/CatAssistant/char_cat_surprised.png  |  Bin [31m0[m -> [32m1453477[m bytes
+ .../Detective/char_detective_confused.png          |  Bin [31m0[m -> [32m1475671[m bytes
+ .../Detective/char_detective_discovery.png         |  Bin [31m0[m -> [32m1572159[m bytes
+ .../Detective/char_detective_girl_idle.png         |  Bin [31m0[m -> [32m1770715[m bytes
+ .../Character/Detective/char_detective_idle.png    |  Bin [31m0[m -> [32m1423187[m bytes
+ .../Character/Detective/char_detective_success.png |  Bin [31m0[m -> [32m1487566[m bytes
+ .../Detective/char_detective_thinking.png          |  Bin [31m0[m -> [32m1428197[m bytes
+ .../CancerTraceClient/Assets/Art/Effects/.gitkeep  |    1 [32m+[m
+ unity/CancerTraceClient/Assets/Art/Icons/.gitkeep  |    1 [32m+[m
+ .../Art/Icons/CancerTypes/icon_cancer_bone.png     |  Bin [31m0[m -> [32m1100881[m bytes
+ .../Art/Icons/CancerTypes/icon_cancer_bowel.png    |  Bin [31m0[m -> [32m1657848[m bytes
+ .../Art/Icons/CancerTypes/icon_cancer_breast.png   |  Bin [31m0[m -> [32m1370738[m bytes
+ .../Icons/CancerTypes/icon_cancer_cns_brain.png    |  Bin [31m0[m -> [32m1710698[m bytes
+ .../CancerTypes/icon_cancer_esophagus_stomach.png  |  Bin [31m0[m -> [32m1237252[m bytes
+ .../Art/Icons/CancerTypes/icon_cancer_lung.png     |  Bin [31m0[m -> [32m1377989[m bytes
+ .../CancerTypes/icon_cancer_ovary_fallopian.png    |  Bin [31m0[m -> [32m1268776[m bytes
+ .../Art/Icons/CancerTypes/icon_cancer_skin.png     |  Bin [31m0[m -> [32m1474398[m bytes
+ .../Assets/Art/Icons/Common/icon_bow.png           |  Bin [31m0[m -> [32m1374285[m bytes
+ .../Assets/Art/Icons/Common/icon_cell.png          |  Bin [31m0[m -> [32m1509579[m bytes
+ .../Assets/Art/Icons/Common/icon_detective_hat.png |  Bin [31m0[m -> [32m1099546[m bytes
+ .../Assets/Art/Icons/Common/icon_dna.png           |  Bin [31m0[m -> [32m1155577[m bytes
+ .../Assets/Art/Icons/Common/icon_exclamation.png   |  Bin [31m0[m -> [32m1108083[m bytes
+ .../Assets/Art/Icons/Common/icon_flower.png        |  Bin [31m0[m -> [32m1217142[m bytes
+ .../Assets/Art/Icons/Common/icon_heart.png         |  Bin [31m0[m -> [32m1133295[m bytes
+ .../Assets/Art/Icons/Common/icon_leaf.png          |  Bin [31m0[m -> [32m1348456[m bytes
+ .../Assets/Art/Icons/Common/icon_lightbulb.png     |  Bin [31m0[m -> [32m1083742[m bytes
+ .../Assets/Art/Icons/Common/icon_magnifier.png     |  Bin [31m0[m -> [32m1288014[m bytes
+ .../Assets/Art/Icons/Common/icon_microscope.png    |  Bin [31m0[m -> [32m1269531[m bytes
+ .../Assets/Art/Icons/Common/icon_paperclip.png     |  Bin [31m0[m -> [32m1331163[m bytes
+ .../Assets/Art/Icons/Common/icon_paw.png           |  Bin [31m0[m -> [32m1293749[m bytes
+ .../Assets/Art/Icons/Common/icon_pushpin.png       |  Bin [31m0[m -> [32m1034707[m bytes
+ .../Assets/Art/Icons/Common/icon_question.png      |  Bin [31m0[m -> [32m953732[m bytes
+ .../Assets/Art/Icons/Common/icon_sparkle.png       |  Bin [31m0[m -> [32m919060[m bytes
+ .../Assets/Art/Icons/Common/icon_star.png          |  Bin [31m0[m -> [32m968804[m bytes
+ .../Assets/Art/Icons/Common/icon_tape.png          |  Bin [31m0[m -> [32m1383014[m bytes
+ unity/CancerTraceClient/Assets/Art/README.md       |   19 [32m+[m
+ unity/CancerTraceClient/Assets/Art/UI/.gitkeep     |    1 [32m+[m
+ .../Assets/Art/UI/Branding/logo_cancertrace.png    |  Bin [31m0[m -> [32m2078862[m bytes
+ .../Art/UI/Buttons/ui_btn_back_normal.png.png      |  Bin [31m0[m -> [32m1226636[m bytes
+ .../Art/UI/Buttons/ui_btn_close_normal.png.png     |  Bin [31m0[m -> [32m1195921[m bytes
+ .../Art/UI/Buttons/ui_btn_gene_scan_normal.png.png |  Bin [31m0[m -> [32m1224780[m bytes
+ .../Art/UI/Buttons/ui_btn_hint_normal.png.png      |  Bin [31m0[m -> [32m1209658[m bytes
+ .../Art/UI/Buttons/ui_btn_next_normal.png.png      |  Bin [31m0[m -> [32m1188809[m bytes
+ .../Art/UI/Buttons/ui_btn_observe_normal.png.png   |  Bin [31m0[m -> [32m1303204[m bytes
+ .../Art/UI/Buttons/ui_btn_submit_normal.png.png    |  Bin [31m0[m -> [32m1308368[m bytes
+ .../Assets/Art/UI/Panels/ui_panel_case_info.png    |  Bin [31m0[m -> [32m2199918[m bytes
+ .../Assets/Art/UI/Panels/ui_panel_dialog.png       |  Bin [31m0[m -> [32m2354249[m bytes
+ .../Art/UI/Panels/ui_panel_evidence_board.png      |  Bin [31m0[m -> [32m2208884[m bytes
+ .../Assets/Art/UI/Panels/ui_panel_gene_scan.png    |  Bin [31m0[m -> [32m1968349[m bytes
+ .../Art/UI/Panels/ui_panel_initial_clues.png       |  Bin [31m0[m -> [32m1903941[m bytes
+ .../Assets/Art/UI/Panels/ui_panel_notebook.png     |  Bin [31m0[m -> [32m2165100[m bytes
+ .../Assets/Art/UI/Panels/ui_panel_sticky_note.png  |  Bin [31m0[m -> [32m1895474[m bytes
+ .../Art/UI/TitleBanners/ui_title_case_archive.png  |  Bin [31m0[m -> [32m1734721[m bytes
+ .../UI/TitleBanners/ui_title_evidence_board.png    |  Bin [31m0[m -> [32m1833484[m bytes
+ .../Art/UI/TitleBanners/ui_title_gene_scan.png     |  Bin [31m0[m -> [32m1638625[m bytes
+ .../Art/UI/TitleBanners/ui_title_initial_clues.png |  Bin [31m0[m -> [32m1595147[m bytes
+ .../UI/TitleBanners/ui_title_research_points.png   |  Bin [31m0[m -> [32m1376867[m bytes
+ unity/CancerTraceClient/Assets/Audio/BGM/.gitkeep  |    1 [32m+[m
+ unity/CancerTraceClient/Assets/Audio/README.md     |    6 [32m+[m
+ unity/CancerTraceClient/Assets/Audio/SFX/.gitkeep  |    1 [32m+[m
+ unity/CancerTraceClient/Assets/Fonts/.gitkeep      |    1 [32m+[m
+ unity/CancerTraceClient/Assets/Materials/.gitkeep  |    1 [32m+[m
+ .../Assets/Prefabs/Cells/.gitkeep                  |    1 [32m+[m
+ .../Assets/Prefabs/Characters/.gitkeep             |    1 [32m+[m
+ unity/CancerTraceClient/Assets/Prefabs/README.md   |    9 [32m+[m
+ unity/CancerTraceClient/Assets/Prefabs/UI/.gitkeep |    1 [32m+[m
+ unity/CancerTraceClient/Assets/README.md           |   14 [32m+[m
+ unity/CancerTraceClient/Assets/Resources/README.md |    3 [32m+[m
+ unity/CancerTraceClient/Assets/Scenes/.gitkeep     |    1 [32m+[m
+ unity/CancerTraceClient/Assets/Scenes/README.md    |    9 [32m+[m
+ .../CancerTraceClient/Assets/Scripts/Core/.gitkeep |    1 [32m+[m
+ .../CancerTraceClient/Assets/Scripts/Data/.gitkeep |    1 [32m+[m
+ .../Assets/Scripts/Debug/.gitkeep                  |    1 [32m+[m
+ .../Assets/Scripts/Gameplay/.gitkeep               |    1 [32m+[m
+ unity/CancerTraceClient/Assets/Scripts/README.md   |    9 [32m+[m
+ unity/CancerTraceClient/Assets/Scripts/UI/.gitkeep |    1 [32m+[m
+ .../Assets/StreamingAssets/GameData/.gitkeep       |    1 [32m+[m
+ .../Assets/StreamingAssets/README.md               |    5 [32m+[m
+ .../CancerTraceClient/Assets/UIStyleGuide/.gitkeep |    1 [32m+[m
+ .../Assets/UIStyleGuide/README.md                  |    5 [32m+[m
+ unity/CancerTraceClient/Packages/README.md         |    3 [32m+[m
+ unity/CancerTraceClient/ProjectSettings/README.md  |    3 [32m+[m
+ unity/CancerTraceClient/README.md                  |   41 [32m+[m
+ unity/Docs/Art_Style_Guide.md                      |  740 [32m++++++++++++++[m
+ unity/Docs/Data_Structure.md                       |  978 [32m+++++++++++++++++++[m
+ unity/Docs/Game_Design_Document_v1.0.md            | 1022 [32m++++++++++++++++++++[m
+ unity/Docs/README.md                               |   27 [32m+[m
+ unity/Docs/References/UI_Asset_Sheet_01.png        |  Bin [31m0[m -> [32m2635702[m bytes
+ unity/Docs/References/UI_Asset_Sheet_02.png        |  Bin [31m0[m -> [32m2670816[m bytes
+ unity/Docs/References/UI_Asset_Sheet_03.png        |  Bin [31m0[m -> [32m2673263[m bytes
+ ...17\234\345\215\225\347\225\214\351\235\242.png" |  Bin [31m0[m -> [32m2436057[m bytes
+ unity/Docs/Scene_Plan.md                           |   23 [32m+[m
+ unity/Docs/Script_Architecture.md                  |   20 [32m+[m
+ unity/Docs/Systems/AI_Assistant.md                 |   37 [32m+[m
+ unity/Docs/Systems/Achievement_System.md           |   19 [32m+[m
+ unity/Docs/Systems/Cancer_Galaxy.md                |   33 [32m+[m
+ unity/Docs/Systems/Case_System.md                  |   48 [32m+[m
+ unity/Docs/Systems/Core_Gameplay_Loop.md           |   26 [32m+[m
+ unity/Docs/Systems/Evidence_Board.md               |   31 [32m+[m
+ unity/Docs/Systems/Gene_Scan.md                    |   22 [32m+[m
+ unity/Docs/Systems/RP_System.md                    |   27 [32m+[m
+ unity/Docs/Systems/Result_Summary.md               |   30 [32m+[m
+ unity/Docs/Systems/Save_System.md                  |   19 [32m+[m
+ unity/Docs/Systems/Shift_System.md                 |   28 [32m+[m
+ unity/Docs/Systems/Tutorial_System.md              |   32 [32m+[m
+ unity/Docs/UI_Asset_Checklist.md                   |   42 [32m+[m
+ unity/Docs/Unity_Development_Guide.md              |   74 [32m++[m
+ unity/README.md                                    |   38 [32m+[m[31m-[m
+ 122 files changed, 3512 insertions(+), 48 deletions(-)

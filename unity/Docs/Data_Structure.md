@@ -72,7 +72,7 @@ results/game_data/
 unity/CancerTraceClient/Assets/StreamingAssets/GameData/
 ```
 
-当前 `StreamingAssets/GameData/` 尚未同步正式 JSON。这是后续工程步骤，不改变 `results/game_data/` 的源数据地位。
+v1.0 正式 JSON 已同步至 `StreamingAssets/GameData/`。`results/game_data/` 仍作为 Python 正式导出源。
 
 |文件|当前内容|顶层结构|运行时职责|
 |-|-|-|-|

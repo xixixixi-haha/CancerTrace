@@ -1,0 +1,396 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "classCount": 8,
+    "trainingExpressionCluesNote": "Representative expression patterns derived only from the 645 Train samples; they are not clinical diagnostic markers."
+  },
+  "classes": [
+    {
+      "classId": "lung",
+      "labelEn": "Lung",
+      "labelZh": "肺",
+      "trainSampleCount": 169,
+      "testSampleCount": 43,
+      "ai": {
+        "precision": 0.863636,
+        "recall": 0.883721,
+        "f1": 0.873563
+      },
+      "commonConfusions": [
+        {
+          "classId": "bowel",
+          "labelEn": "Bowel",
+          "labelZh": "肠道",
+          "errorCount": 2
+        },
+        {
+          "classId": "esophagus_stomach",
+          "labelEn": "Esophagus/Stomach",
+          "labelZh": "食管 / 胃",
+          "errorCount": 2
+        }
+      ],
+      "trainingExpressionClues": [
+        {
+          "gene": "LGSN",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "INA",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "IFFO1",
+          "direction": "LOW",
+          "strength": "Weak"
+        },
+        {
+          "gene": "DNAH14",
+          "direction": "HIGH",
+          "strength": "Weak"
+        },
+        {
+          "gene": "LRRC17",
+          "direction": "LOW",
+          "strength": "Weak"
+        }
+      ]
+    },
+    {
+      "classId": "skin",
+      "labelEn": "Skin",
+      "labelZh": "皮肤",
+      "trainSampleCount": 97,
+      "testSampleCount": 24,
+      "ai": {
+        "precision": 0.956522,
+        "recall": 0.916667,
+        "f1": 0.93617
+      },
+      "commonConfusions": [
+        {
+          "classId": "bone",
+          "labelEn": "Bone",
+          "labelZh": "骨",
+          "errorCount": 2
+        }
+      ],
+      "trainingExpressionClues": [
+        {
+          "gene": "IFFO1",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "CBR3",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "TMEM101",
+          "direction": "HIGH",
+          "strength": "Weak"
+        },
+        {
+          "gene": "INA",
+          "direction": "LOW",
+          "strength": "Weak"
+        },
+        {
+          "gene": "FOXG1",
+          "direction": "LOW",
+          "strength": "Weak"
+        }
+      ]
+    },
+    {
+      "classId": "cns_brain",
+      "labelEn": "CNS/Brain",
+      "labelZh": "中枢神经 / 脑",
+      "trainSampleCount": 82,
+      "testSampleCount": 21,
+      "ai": {
+        "precision": 0.904762,
+        "recall": 0.904762,
+        "f1": 0.904762
+      },
+      "commonConfusions": [
+        {
+          "classId": "bone",
+          "labelEn": "Bone",
+          "labelZh": "骨",
+          "errorCount": 1
+        }
+      ],
+      "trainingExpressionClues": [
+        {
+          "gene": "FOXG1",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "LRRC17",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "DNAH14",
+          "direction": "LOW",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "TCEAL7",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "IFFO1",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        }
+      ]
+    },
+    {
+      "classId": "bowel",
+      "labelEn": "Bowel",
+      "labelZh": "肠道",
+      "trainSampleCount": 69,
+      "testSampleCount": 17,
+      "ai": {
+        "precision": 0.823529,
+        "recall": 0.823529,
+        "f1": 0.823529
+      },
+      "commonConfusions": [
+        {
+          "classId": "esophagus_stomach",
+          "labelEn": "Esophagus/Stomach",
+          "labelZh": "食管 / 胃",
+          "errorCount": 2
+        },
+        {
+          "classId": "skin",
+          "labelEn": "Skin",
+          "labelZh": "皮肤",
+          "errorCount": 1
+        }
+      ],
+      "trainingExpressionClues": [
+        {
+          "gene": "ELOVL5",
+          "direction": "LOW",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "TMEM62",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "CBR3",
+          "direction": "LOW",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "IFFO1",
+          "direction": "LOW",
+          "strength": "Weak"
+        },
+        {
+          "gene": "INA",
+          "direction": "LOW",
+          "strength": "Weak"
+        }
+      ]
+    },
+    {
+      "classId": "esophagus_stomach",
+      "labelEn": "Esophagus/Stomach",
+      "labelZh": "食管 / 胃",
+      "trainSampleCount": 62,
+      "testSampleCount": 16,
+      "ai": {
+        "precision": 0.666667,
+        "recall": 0.75,
+        "f1": 0.705882
+      },
+      "commonConfusions": [
+        {
+          "classId": "lung",
+          "labelEn": "Lung",
+          "labelZh": "肺",
+          "errorCount": 2
+        }
+      ],
+      "trainingExpressionClues": [
+        {
+          "gene": "ELOVL5",
+          "direction": "LOW",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "IFFO1",
+          "direction": "LOW",
+          "strength": "Weak"
+        },
+        {
+          "gene": "CBR3",
+          "direction": "LOW",
+          "strength": "Weak"
+        },
+        {
+          "gene": "INA",
+          "direction": "LOW",
+          "strength": "Weak"
+        },
+        {
+          "gene": "LRRC17",
+          "direction": "LOW",
+          "strength": "Weak"
+        }
+      ]
+    },
+    {
+      "classId": "breast",
+      "labelEn": "Breast",
+      "labelZh": "乳腺",
+      "trainSampleCount": 57,
+      "testSampleCount": 14,
+      "ai": {
+        "precision": 1.0,
+        "recall": 0.714286,
+        "f1": 0.833333
+      },
+      "commonConfusions": [
+        {
+          "classId": "lung",
+          "labelEn": "Lung",
+          "labelZh": "肺",
+          "errorCount": 2
+        },
+        {
+          "classId": "esophagus_stomach",
+          "labelEn": "Esophagus/Stomach",
+          "labelZh": "食管 / 胃",
+          "errorCount": 2
+        }
+      ],
+      "trainingExpressionClues": [
+        {
+          "gene": "CALML5",
+          "direction": "HIGH",
+          "strength": "Strong"
+        },
+        {
+          "gene": "CYP4B1",
+          "direction": "HIGH",
+          "strength": "Strong"
+        },
+        {
+          "gene": "LDHB",
+          "direction": "LOW",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "TMEM101",
+          "direction": "LOW",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "IFFO1",
+          "direction": "LOW",
+          "strength": "Weak"
+        }
+      ]
+    },
+    {
+      "classId": "bone",
+      "labelEn": "Bone",
+      "labelZh": "骨",
+      "trainSampleCount": 55,
+      "testSampleCount": 14,
+      "ai": {
+        "precision": 0.722222,
+        "recall": 0.928571,
+        "f1": 0.8125
+      },
+      "commonConfusions": [
+        {
+          "classId": "cns_brain",
+          "labelEn": "CNS/Brain",
+          "labelZh": "中枢神经 / 脑",
+          "errorCount": 1
+        }
+      ],
+      "trainingExpressionClues": [
+        {
+          "gene": "ALPL",
+          "direction": "HIGH",
+          "strength": "Strong"
+        },
+        {
+          "gene": "TMEM62",
+          "direction": "LOW",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "LRRC17",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "IFFO1",
+          "direction": "HIGH",
+          "strength": "Moderate"
+        },
+        {
+          "gene": "CBR3",
+          "direction": "HIGH",
+          "strength": "Weak"
+        }
+      ]
+    },
+    {
+      "classId": "ovary_fallopian_tube",
+      "labelEn": "Ovary/Fallopian Tube",
+      "labelZh": "卵巢 / 输卵管",
+      "trainSampleCount": 54,
+      "testSampleCount": 13,
+      "ai": {
+        "precision": 1.0,
+        "recall": 0.846154,
+        "f1": 0.916667
+      },
+      "commonConfusions": [],
+      "trainingExpressionClues": [
+        {
+          "gene": "SOX17",
+          "direction": "HIGH",
+          "strength": "Strong"
+        },
+        {
+          "gene": "CLDN16",
+          "direction": "HIGH",
+          "strength": "Strong"
+        },
+        {
+          "gene": "PAX8",
+          "direction": "HIGH",
+          "strength": "Strong"
+        },
+        {
+          "gene": "LYPLAL1",
+          "direction": "LOW",
+          "strength": "Strong"
+        },
+        {
+          "gene": "RAPGEF3",
+          "direction": "HIGH",
+          "strength": "Strong"
+        }
+      ]
+    }
+  ]
+}
