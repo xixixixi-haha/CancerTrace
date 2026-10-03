@@ -77,3 +77,50 @@ Runtime 与存档层建立在已验证的只读 `GameDataContext` 之上，不�
 
 - Unity 2021.3.45f2c1 C# 编译通过。
 - Runtime/Save Smoke Test 通过：Shift 初始化与唯一抽取、RP/Score 初值、工具和诊断保护、保存/恢复一致性、完成结果恢复、RP 不足拒绝、损坏存档拒绝及删除存档均已验证。
+
+## v1.0 Core Gameplay Flow 实现
+
+核心流程位于 `Assets/Scripts/Gameplay/Flow/`。UI 后续只调用 `GameplayService` 并读取只读 View Model，不直接修改 Runtime State，也不接收完整 `GameCaseData` 或 `GalaxyNodeData`。
+
+### 类与职责
+
+- `GameplayService`：唯一的核心流程服务，串联 New Shift、Current Case、调查工具、Evidence Board、Diagnosis、Result、Next Case、Shift Summary 与 Next Shift。
+- `GameplayActionResult<T>`：统一返回操作状态、过滤后的数据和错误消息；正常流程失败不依赖异常控制。
+- `PlayerCaseView`：仅包含病例标识、受控展示信息、2 条 Initial Clues、RP/Score、工具状态及玩家自己的选择状态。
+- `GeneScanView`：仅包含正式 Case 已保存的 3 条 Gene Scan Clues。
+- `CancerGalaxyView`：包含当前 Case 坐标、过滤后的 645 个 Reference Nodes 和正式保存的 5 个 nearbyReferences；不包含 Case 真实类别、推荐诊断或概率推断。
+- `AiAssistantView`：仅包含 Prediction、Confidence 与 Top 3 Candidates，不包含 `ai.correct`、真实类别或 Explanation。
+- `EvidenceBoardView`：按 Runtime 工具标记聚合已经解锁的 Initial、Gene Scan、Galaxy 和 AI 证据。
+- `ResultView`：只在 Diagnosis 提交后创建，届时才包含真实诊断、AI 复盘和可选 ANOMALY 标记。
+- `ShiftSummaryView`：根据已完成结果汇总完成数、正确数、准确率、Score、剩余 RP 和三种工具使用次数。
+- `CoreGameplaySmokeTest`：通过 Context Menu 或 Unity Editor batch mode 运行完整 10 Case 流程及 ANOMALY 防泄漏测试。
+
+### 安全数据边界
+
+1. Gameplay 内部可通过 `caseId` 查询静态 Case，但所有对外结果都重新映射为只读 View Model，不返回静态模型引用。
+2. 提交前的 `PlayerCaseView` 始终只有 2 条 Initial Clues；Gene Scan 数据只由成功的 `UseGeneScan` 或已解锁 Evidence Board 返回。
+3. AI 数据在提交前只有成功使用 AI Assistant 后才返回，且 View Model 不声明 `correct` 字段。
+4. Galaxy 全量节点只筛选 `nodeType == REFERENCE`；Case Nodes 及其中的真实类别不会进入 Gameplay View。
+5. `GetResult` 在提交前返回 `InvalidState` 且无数据。`difficulty` 与 ANOMALY 只在提交后的 Result 映射阶段读取。
+
+### 实际流程
+
+```text
+StartNewShift
+    -> GetCurrentCase / Investigate
+    -> SelectDiagnosis（可选暂存）
+    -> SubmitDiagnosis
+    -> GetResult
+    -> NextCase（Case 1–9）
+    -> ShiftCompleted（Case 10）
+    -> GetShiftSummary
+    -> StartNextShift
+```
+
+成功使用工具、暂存诊断、提交诊断、进入下一 Case、新建 Shift 和 Shift 结束均沿用 Runtime/Save 层的自动保存。恢复存档后由相同 Runtime 标记重建安全视图和 Evidence Board，不复制科学数据。
+
+### 验证状态
+
+- Unity 2021.3.45f2c1 编译：0 errors。
+- Core Gameplay Smoke Test：完整 10 Case Shift、三种调查工具、Evidence Board、正确/错误提交、RP 为 0 时免费提交、Result、Next、Shift Summary、Next Shift 与中途 Save/Load 全部通过。
+- ANOMALY 专项：真实 ANOMALY Case 在提交前通过 Player Case、三种工具及 Evidence Board 均无法取得标签、真实类别或 `ai.correct`；提交后 Result 正确揭示 ANOMALY。

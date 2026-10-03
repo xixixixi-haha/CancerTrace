@@ -132,6 +132,32 @@ namespace CancerTrace.Gameplay.Runtime
             return true;
         }
 
+        public bool TrySelectDiagnosis(string diagnosis, out string errorMessage)
+        {
+            CurrentCaseRuntimeState current;
+            if (!TryGetActiveCase(out current, out errorMessage))
+            {
+                return false;
+            }
+            if (current.DiagnosisSubmitted)
+            {
+                errorMessage = "Diagnosis has already been submitted for this Case.";
+                return false;
+            }
+
+            CancerType unused;
+            if (!GameDataValueParser.TryParseCancerType(diagnosis, out unused))
+            {
+                errorMessage = "Diagnosis must be one of the 8 frozen CancerType IDs.";
+                return false;
+            }
+
+            current.SelectedDiagnosis = diagnosis;
+            errorMessage = null;
+            AutoSave("diagnosis selection");
+            return true;
+        }
+
         public bool TrySubmitDiagnosis(
             string diagnosis,
             out CompletedCaseResult completedResult,
