@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "shift": {
+    "casesPerShift": 10,
+    "startingRP": 200
+  },
+  "costs": {
+    "geneScan": 10,
+    "cancerGalaxy": 25,
+    "aiAssistant": 40
+  },
+  "investigation": {
+    "initialClueCount": 2,
+    "geneScanClueCount": 3,
+    "maxGeneScanUsesPerCase": 1,
+    "maxCancerGalaxyUsesPerCase": 1,
+    "maxAIAssistantUsesPerCase": 1,
+    "minimumRP": 0
+  },
+  "rewards": {
+    "correctDiagnosisScore": 100,
+    "wrongDiagnosisScore": 0
+  },
+  "tutorial": {
+    "investigationToolsCostRP": 0
+  }
+}
