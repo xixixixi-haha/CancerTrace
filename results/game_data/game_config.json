@@ -1,44 +1,27 @@
 {
   "version": "1.0",
   "shift": {
-    "casesPerShift": 5,
-    "startingRP": 300
+    "casesPerShift": 10,
+    "startingRP": 200
   },
   "costs": {
-    "geneScan": 15,
-    "galaxyScan": 25,
-    "askAI": 35
+    "geneScan": 10,
+    "cancerGalaxy": 25,
+    "aiAssistant": 40
   },
   "investigation": {
-    "maxPaidActionsPerCase": 3,
     "initialClueCount": 2,
     "geneScanClueCount": 3,
-    "aiRequiresPreliminaryDiagnosis": true
+    "maxGeneScanUsesPerCase": 1,
+    "maxCancerGalaxyUsesPerCase": 1,
+    "maxAIAssistantUsesPerCase": 1,
+    "minimumRP": 0
   },
   "rewards": {
     "correctDiagnosisScore": 100,
-    "efficientResearchScoreBonus": 20,
-    "efficientResearchRefundRP": 10,
-    "efficientResearchMaxSpend": 25,
-    "humanBeatsAIScoreBonus": 0
+    "wrongDiagnosisScore": 0
   },
-  "emergencyGrant": {
-    "triggerBelowRP": 15,
-    "grantRP": 60,
-    "scorePenalty": 100,
-    "maxUsesPerShift": 1
-  },
-  "ranks": {
-    "S": 540,
-    "A": 480,
-    "B": 390,
-    "C": 300,
-    "D": 0
-  },
-  "difficultyMix": {
-    "easy": 1,
-    "normal": 2,
-    "hard": 1,
-    "wildcard": 1
+  "tutorial": {
+    "investigationToolsCostRP": 0
   }
 }

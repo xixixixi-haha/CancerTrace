@@ -24,7 +24,23 @@ unity/UserSettings/
 unity/Build/
 unity/Builds/
 
+# Unity generated directories at any project depth
+Library/
+Temp/
+Obj/
+Logs/
+UserSettings/
+
+# Unity generated directories at any project depth
+Library/
+Temp/
+Obj/
+Logs/
+UserSettings/
+
 # OS
 .DS_Store
 Thumbs.db
 
+# Temporary art asset inbox
+asset_inbox/

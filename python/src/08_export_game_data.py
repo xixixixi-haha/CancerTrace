@@ -531,18 +531,30 @@ def build_profiles(frames: dict[str, pd.DataFrame]) -> dict[str, Any]:
 def game_config() -> dict[str, Any]:
     return {
         "version": "1.0",
-        "shift": {"casesPerShift": 5, "startingRP": 300},
-        "costs": {"geneScan": 15, "galaxyScan": 25, "askAI": 35},
-        "investigation": {"maxPaidActionsPerCase": 3, "initialClueCount": 2,
-                          "geneScanClueCount": 3, "aiRequiresPreliminaryDiagnosis": True},
-        "rewards": {"correctDiagnosisScore": 100, "efficientResearchScoreBonus": 20,
-                    "efficientResearchRefundRP": 10, "efficientResearchMaxSpend": 25,
-                    "humanBeatsAIScoreBonus": 0},
-        "emergencyGrant": {"triggerBelowRP": 15, "grantRP": 60, "scorePenalty": 100,
-                           "maxUsesPerShift": 1},
-        "ranks": {"S": 540, "A": 480, "B": 390, "C": 300, "D": 0},
-        "difficultyMix": {"easy": 1, "normal": 2, "hard": 1, "wildcard": 1},
+        "shift": {"casesPerShift": 10, "startingRP": 200},
+        "costs": {"geneScan": 10, "cancerGalaxy": 25, "aiAssistant": 40},
+        "investigation": {
+            "initialClueCount": 2,
+            "geneScanClueCount": 3,
+            "maxGeneScanUsesPerCase": 1,
+            "maxCancerGalaxyUsesPerCase": 1,
+            "maxAIAssistantUsesPerCase": 1,
+            "minimumRP": 0,
+        },
+        "rewards": {"correctDiagnosisScore": 100, "wrongDiagnosisScore": 0},
+        "tutorial": {"investigationToolsCostRP": 0},
     }
+
+
+def validate_game_config(config: dict[str, Any]) -> None:
+    """Require the reloaded config to match the v1.0 gameplay contract exactly."""
+    expected = game_config()
+    if config != expected:
+        raise RuntimeError(
+            "Reload QA failed for game_config.json: expected v1.0 config "
+            f"{json.dumps(expected, ensure_ascii=False, sort_keys=True)}, got "
+            f"{json.dumps(config, ensure_ascii=False, sort_keys=True)}"
+        )
 
 
 def dump_json(path: Path, value: dict[str, Any]) -> None:
@@ -584,10 +596,7 @@ def reload_qa() -> dict[str, str]:
         raise RuntimeError("Reload QA failed for galaxy_nodes.json")
     if len(loaded["class_profiles.json"].get("classes", [])) != 8:
         raise RuntimeError("Reload QA failed for class_profiles.json")
-    required = {"version", "shift", "costs", "investigation", "rewards",
-                "emergencyGrant", "ranks", "difficultyMix"}
-    if not required.issubset(loaded["game_config.json"]):
-        raise RuntimeError("Reload QA failed for game_config.json")
+    validate_game_config(loaded["game_config.json"])
     return {name: "PASS" for name in files}
 
 
