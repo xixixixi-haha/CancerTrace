@@ -58,18 +58,45 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Data\Models\GameDataModels.cs" />
-    <Compile Include="Assets\Scripts\Data\GameDataLoader.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Runtime\GameRuntimeService.cs" />
-    <Compile Include="Assets\Scripts\Debug\RuntimeSaveSmokeTest.cs" />
+    <Compile Include="Assets\Scripts\Debug\CoreGameplaySmokeTest.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayViews.cs" />
     <Compile Include="Assets\Scripts\Data\Repositories\GameDataRepositories.cs" />
     <Compile Include="Assets\Scripts\Data\Save\SaveDataModels.cs" />
-    <Compile Include="Assets\Scripts\Debug\GameDataSmokeTest.cs" />
-    <Compile Include="Assets\Scripts\Data\Save\SaveDataRepository.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\Runtime\GameRuntimeState.cs" />
-    <Compile Include="Assets\Scripts\Data\GameDataContext.cs" />
     <Compile Include="Assets\Scripts\Data\Validation\DataValidationResult.cs" />
+    <Compile Include="Assets\Scripts\Debug\RuntimeSaveSmokeTest.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayActionResult.cs" />
+    <Compile Include="Assets\Scripts\Data\GameDataContext.cs" />
+    <Compile Include="Assets\Scripts\Data\Models\GameDataModels.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Runtime\GameRuntimeState.cs" />
+    <Compile Include="Assets\Scripts\Debug\GameDataSmokeTest.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayService.cs" />
+    <Compile Include="Assets\Scripts\Data\GameDataLoader.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Runtime\GameRuntimeService.cs" />
+    <Compile Include="Assets\Scripts\Data\Save\SaveDataRepository.cs" />
     <Compile Include="Assets\Scripts\Data\Validation\DataValidator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
