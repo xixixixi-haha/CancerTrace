@@ -1,0 +1,340 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to the License Client on channel: "LicenseClient-Lrx" at "2026-10-04T02:43:06.686648Z"
+[Licensing::Client] Error: Code 10 while verifying Licensing Client signature (process Id: 15172, path: "D:/app/unity/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] Error: LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.16.1+e780b2e
+  Session Id:              9f1b772473fb47b58e997004eb69f61e
+  Correlation Id:          da5b09e588178c0be39225ff9aa19a21
+  External correlation Id: 8729301766998360662
+  Machine Id:              9g+lbAYtXlaioPvFqIsBnljEQAk=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-Lrx" (connect: 0.00s, validation: 0.03s, handshake: 0.06s)
+[Licensing::IpcConnector] Successfully connected to the License Notification on channel: "LicenseClient-Lrx-notifications" at "2026-10-04T02:43:06.7720338Z"
+Entitlement-based licensing initiated
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully updated license
+Built from '2021.3/china_unity/release' branch; Version is '2021.3.45f2c1 (8058fe21db2f) revision 8411390'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) 64bit CoreCountrySpecific' Language: 'zh' Physical Memory: 16091 MB
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "F4-34H7-J3F7-R6EE-QXDR-XXXX"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Server::Start -- Port 58424 was selected
+
+COMMAND LINE ARGUMENTS:
+D:\app\unity\Unity Hub\2021.3.45f2c1\Editor\Unity.exe
+-batchmode
+-nographics
+-quit
+-projectPath
+D:\git\CancerTrace\unity\CancerTraceClient
+-executeMethod
+CancerTrace.EditorTools.SourceHanSansTmpFontSetup.CreateAndVerify
+-logFile
+D:\git\CancerTrace\unity\CancerTraceClient\font_setup.log
+Successfully changed project path to: D:\git\CancerTrace\unity\CancerTraceClient
+D:/git/CancerTrace/unity/CancerTraceClient
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [51608] Host "[IP] 10.199.129.133 [Port] 55496 [Flags] 2 [Guid] 287566138 [EditorId] 287566138 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-VVON5SB6) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [51608] Host "[IP] 10.199.129.133 [Port] 55496 [Flags] 2 [Guid] 287566138 [EditorId] 287566138 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-VVON5SB6) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+AS: AutoStreaming module initializing.
+[Physics::Module] Initialized MultithreadedJobDispatcher with {0} workers.
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] 
+Registered 57 packages:
+  Packages from [https://packages.unity.cn]:
+    com.unity.collab-proxy@2.5.2 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.collab-proxy@2.5.2)
+    com.unity.ide.rider@3.0.31 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.ide.rider@3.0.31)
+    com.unity.ide.visualstudio@2.0.22 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.ide.visualstudio@2.0.22)
+    com.unity.ide.vscode@1.2.5 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.ide.vscode@1.2.5)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.2)
+    com.unity.test-framework@1.1.33 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.test-framework@1.1.33)
+    com.unity.textmeshpro@3.0.6 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.textmeshpro@3.0.6)
+    com.unity.timeline@1.6.5 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.timeline@1.6.5)
+    com.unity.visualscripting@1.9.4 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.visualscripting@1.9.4)
+    com.unity.ext.nunit@1.0.6 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.ext.nunit@1.0.6)
+    com.unity.2d.animation@7.1.1 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.animation@7.1.1)
+    com.unity.2d.pixel-perfect@5.0.3 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.pixel-perfect@5.0.3)
+    com.unity.2d.psdimporter@6.0.9 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.psdimporter@6.0.9)
+    com.unity.2d.spriteshape@7.0.7 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.spriteshape@7.0.7)
+    com.unity.2d.tilemap.extras@2.2.7 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.tilemap.extras@2.2.7)
+    com.unity.2d.aseprite@1.1.6 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.aseprite@1.1.6)
+    com.unity.2d.common@6.0.7 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.common@6.0.7)
+    com.unity.mathematics@1.2.6 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.mathematics@1.2.6)
+    com.unity.2d.path@5.0.2 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.path@5.0.2)
+    com.unity.burst@1.8.18 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.burst@1.8.18)
+  Built-in packages:
+    com.unity.feature.2d@2.0.1 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.feature.2d@2.0.1)
+    com.unity.ugui@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.ugui@1.0.0)
+    com.unity.modules.ai@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.ai@1.0.0)
+    com.unity.modules.androidjni@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.androidjni@1.0.0)
+    com.unity.modules.animation@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.animation@1.0.0)
+    com.unity.modules.assetbundle@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.assetbundle@1.0.0)
+    com.unity.modules.audio@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.audio@1.0.0)
+    com.unity.modules.cloth@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.cloth@1.0.0)
+    com.unity.modules.director@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.director@1.0.0)
+    com.unity.modules.imageconversion@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.imageconversion@1.0.0)
+    com.unity.modules.imgui@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.imgui@1.0.0)
+    com.unity.modules.jsonserialize@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.jsonserialize@1.0.0)
+    com.unity.modules.particlesystem@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.particlesystem@1.0.0)
+    com.unity.modules.physics@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.physics@1.0.0)
+    com.unity.modules.physics2d@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.physics2d@1.0.0)
+    com.unity.modules.screencapture@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.screencapture@1.0.0)
+    com.unity.modules.terrain@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.terrain@1.0.0)
+    com.unity.modules.terrainphysics@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.terrainphysics@1.0.0)
+    com.unity.modules.tilemap@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.tilemap@1.0.0)
+    com.unity.modules.ui@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.ui@1.0.0)
+    com.unity.modules.uielements@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.uielements@1.0.0)
+    com.unity.modules.umbra@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.umbra@1.0.0)
+    com.unity.modules.unityanalytics@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.unityanalytics@1.0.0)
+    com.unity.modules.unitywebrequest@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.unitywebrequestaudio@1.0.0)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.unitywebrequestwww@1.0.0)
+    com.unity.modules.vehicles@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.vehicles@1.0.0)
+    com.unity.modules.video@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.video@1.0.0)
+    com.unity.modules.vr@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.vr@1.0.0)
+    com.unity.modules.wind@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.wind@1.0.0)
+    com.unity.modules.xr@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.xr@1.0.0)
+    com.unity.modules.subsystems@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.subsystems@1.0.0)
+    com.unity.modules.uielementsnative@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.modules.uielementsnative@1.0.0)
+    com.unity.2d.sprite@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.sprite@1.0.0)
+    com.unity.2d.tilemap@1.0.0 (location: D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.2d.tilemap@1.0.0)
+
+[Subsystems] No new subsystems found in resolved package list.
+Package Manager log level set to [2]
+[Package Manager] Done registering packages in 0.70s seconds
+Refreshing native plugins compatible for Editor in 29.43 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.45f2c1 (8058fe21db2f)
+[Subsystems] Discovering subsystems at path D:/app/unity/Unity Hub/2021.3.45f2c1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/git/CancerTrace/unity/CancerTraceClient/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; threaded=0; jobified=0
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+[Licensing::Client] Successfully resolved entitlement details
+Initialize mono
+Mono path[0] = 'D:/app/unity/Unity Hub/2021.3.45f2c1/Editor/Data/Managed'
+Mono path[1] = 'D:/app/unity/Unity Hub/2021.3.45f2c1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'D:/app/unity/Unity Hub/2021.3.45f2c1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56436
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: D:/app/unity/Unity Hub/2021.3.45f2c1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.015694 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 2.59 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.700 seconds
+Domain Reload Profiling:
+	ReloadAssembly (701ms)
+		BeginReloadAssembly (171ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (397ms)
+			LoadAssemblies (167ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (113ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (27ms)
+			SetupLoadedEditorAssemblies (204ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (9ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (3ms)
+				BeforeProcessingInitializeOnLoad (2ms)
+				ProcessInitializeOnLoadAttributes (138ms)
+				ProcessInitializeOnLoadMethodAttributes (52ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+Registering precompiled user dll's ...
+Registered in 0.028974 seconds.
+Start importing Assets/Editor using Guid(e3b61bda8f9c6e744bbecf2aca321fc9) Importer(-1,00000000000000000000000000000000)  -> (artifact id: '02ced02a77b5cb3e26492a0c1798e419') in 0.012968 seconds 
+Start importing Assets/Fonts/TMP using Guid(c0c034fd40a86e044bbc6fc8cd311cf9) Importer(-1,00000000000000000000000000000000)  -> (artifact id: 'efbee78c53b5b2181f2a7bda37a3920f') in 0.003014 seconds 
+Start importing Assets/Editor/SourceHanSansTmpFontSetup.cs using Guid(841a71175dbefca488b865858a73a12e) Importer(-1,00000000000000000000000000000000)  -> (artifact id: '66d53d0d1fcadc9918e233aa23e0175c') in 0.005582 seconds 
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: D:\app\unity\Unity Hub\2021.3.45f2c1\Editor\Data\bee_backend.exe --profile="Library/Bee/backend_profiler0.traceevents" --stdin-canary --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure ScriptAssemblies
+WorkingDir: D:/git/CancerTrace/unity/CancerTraceClient
+ExitCode: 4 Duration: 0s525ms
+Rebuilding DAG because FileSignature timestamp changed: Library/Bee/1900b0aE-inputdata.json
+*** Tundra requires additional run (0.06 seconds), 0 items updated, 0 evaluated
+Starting: D:\app\unity\Unity Hub\2021.3.45f2c1\Editor\Data\Tools\netcorerun\netcorerun.exe "D:\app\unity\Unity Hub\2021.3.45f2c1\Editor\Data\Tools\BuildPipeline\ScriptCompilationBuildProgram.exe" "Library/Bee/1900b0aE.dag.json" "Library/Bee/1900b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+WorkingDir: D:/git/CancerTrace/unity/CancerTraceClient
+ExitCode: 0 Duration: 3s403ms
+Starting: D:\app\unity\Unity Hub\2021.3.45f2c1\Editor\Data\bee_backend.exe --profile="Library/Bee/backend_profiler1.traceevents" --stdin-canary --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/1900b0aE.dag.json" ScriptAssemblies
+WorkingDir: D:/git/CancerTrace/unity/CancerTraceClient
+ExitCode: 0 Duration: 2s216ms
+Finished compiling graph: 574 nodes, 6759 flattened edges (6759 ToBuild, 0 ToUse), maximum node priority 355
+[214/573    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.rsp
+[246/573    0s] WriteResponseFile Library/Bee/artifacts/rsp/2781082588993088484.rsp
+[249/573    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.AdditionalFile.txt
+[291/573    0s] WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll.mvfrm.rsp
+[568/573    0s] MovedFromExtractorCombine Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll.mvfrm
+[569/573    1s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+[570/573    0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+- Starting ILPostProcessorRunner
+
+- Starting ILPostProcessor 'zzzUnity.Burst.CodeGen.BurstILPostProcessor' on Assembly-CSharp-Editor.dll
+
+- Finished ILPostProcessor 'zzzUnity.Burst.CodeGen.BurstILPostProcessor' on Assembly-CSharp-Editor.dll in 0.132942 seconds
+
+- Finished ILPostProcessorRunner in 0.209021 seconds
+[571/573    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[572/573    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (2.18 seconds), 9 items updated, 573 evaluated
+AssetDatabase: script compilation time: 6.489391s
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 52.73 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  4.159 seconds
+Domain Reload Profiling:
+	ReloadAssembly (4160ms)
+		BeginReloadAssembly (156ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (20ms)
+		EndReloadAssembly (3902ms)
+			LoadAssemblies (175ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (239ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (46ms)
+			SetupLoadedEditorAssemblies (3413ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (6ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (53ms)
+				BeforeProcessingInitializeOnLoad (83ms)
+				ProcessInitializeOnLoadAttributes (3179ms)
+				ProcessInitializeOnLoadMethodAttributes (67ms)
+				AfterProcessingInitializeOnLoad (24ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (26ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.026135 seconds.
+Start importing Assets/Fonts/SourceHanSansSC-Regular.otf using Guid(98208ac956955f947b95af213c935dde) Importer(-1,00000000000000000000000000000000)  -> (artifact id: '8196762ae630295073c617e9e2d49722') in 0.130733 seconds 
+Refreshing native plugins compatible for Editor in 0.72 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh: Total: 15.465 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=4 (actual=4, local cache=0, cache server=0)
+		Asset DB Process Time: managed=9 ms, native=1834 ms
+		Asset DB Callback time: managed=275 ms, native=11 ms
+		Scripting: domain reloads=1, domain reload time=4282 ms, compile time=6494 ms, other=2558 ms
+		Project Asset Count: scripts=4621, non-scripts=1161
+		Asset File Changes: new=4, changed=4, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeBeforeRefreshCallbacks: 1.002ms
+	ApplyChangesToAssetFolders: 0.063ms
+	Scan: 1395.906ms
+	OnSourceAssetsModified: 0.965ms
+	InitializeImportedAssetsSnapshot: 32.197ms
+	GetAllGuidsForCategorization: 0.633ms
+	CategorizeAssets: 133.994ms
+	ImportOutOfDateAssets: 13561.885ms (6878.704ms without children)
+		ImportManagerImport: 185.853ms (30.657ms without children)
+			ImportInProcess: 155.109ms
+			UpdateCategorizedAssets: 0.087ms
+		CompileScripts: 6493.602ms
+		ReloadImportedAssets: 0.003ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.868ms
+		InitializingProgressBar: 0.017ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.709ms
+		OnDemandSchedulerStart: 1.128ms
+	ReloadSourceAssets: 0.622ms
+	UnloadImportedAssets: 30.136ms
+	PostProcessAllAssets: 283.391ms
+	Hotreload: 1.980ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.001ms
+	UnloadStreamsBegin: 0.539ms
+	LoadedImportedAssetsSnapshotReleaseGCHandles: 1.592ms
+	GetLoadedSourceAssetsIDs: 1.412ms
+	GetLoadedSourceAssetsSnapshot: 0.521ms
+	PersistCurrentRevisions: 0.412ms
+	UnloadStreamsEnd: 0.058ms
+	GenerateScriptTypeHashes: 0.942ms
+	Untracked: 301.407ms
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 9.316ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-CancerTraceClient
+ProgressiveSceneManager::Cancel()
+Unloading 128 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 177 unused Assets / (464.3 KB). Loaded Objects now: 4285.
+Memory consumption went from 130.2 MB to 129.7 MB.
+Total: 5.848200 ms (FindLiveObjects: 0.262900 ms CreateObjectMapping: 0.134800 ms MarkObjects: 5.063100 ms  DeleteObjects: 0.385800 ms)
+
+Registering precompiled user dll's ...
+Registered in 0.025507 seconds.
+Start importing Assets/Fonts/SourceHanSansSC-Regular.otf using Guid(98208ac956955f947b95af213c935dde) Importer(-1,00000000000000000000000000000000)  -> (artifact id: '8196762ae630295073c617e9e2d49722') in 0.074340 seconds 
+Refreshing native plugins compatible for Editor in 0.61 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh: Total: 0.185 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+ArgumentNullException: Value cannot be null.
+Parameter name: shader
+  at (wrapper managed-to-native) UnityEngine.Material.CreateWithShader(UnityEngine.Material,UnityEngine.Shader)
+  at UnityEngine.Material..ctor (UnityEngine.Shader shader) [0x00008] in <7ec46b65c5b844eba68646b3c21027d3>:0 
+  at TMPro.TMP_FontAsset.CreateFontAsset (UnityEngine.Font font, System.Int32 samplingPointSize, System.Int32 atlasPadding, UnityEngine.TextCore.LowLevel.GlyphRenderMode renderMode, System.Int32 atlasWidth, System.Int32 atlasHeight, TMPro.AtlasPopulationMode atlasPopulationMode, System.Boolean enableMultiAtlasSupport) [0x00109] in D:\git\CancerTrace\unity\CancerTraceClient\Library\PackageCache\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_FontAsset.cs:517 
+  at CancerTrace.EditorTools.SourceHanSansTmpFontSetup.CreateAndVerify () [0x00042] in D:\git\CancerTrace\unity\CancerTraceClient\Assets\Editor\SourceHanSansTmpFontSetup.cs:28 
+
+(Filename: Assets/Editor/SourceHanSansTmpFontSetup.cs Line: 28)
+
+executeMethod method CancerTrace.EditorTools.SourceHanSansTmpFontSetup.CreateAndVerify threw exception.
+Exiting without the bug reporter. Application will terminate with return code 1
