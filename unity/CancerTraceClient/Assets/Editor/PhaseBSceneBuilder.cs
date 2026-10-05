@@ -13,7 +13,11 @@ namespace CancerTrace.EditorTools
         private const string SceneDirectory = "Assets/Scenes";
         private const string FontPath = "Assets/Fonts/TMP/SourceHanSansSC-Regular SDF.asset";
         private const string SharedBackgroundPath = "Assets/Art/Background/SharedBackground.png";
-        private const string MainMenuBackgroundPath = "Assets/Art/Background/bg_mainmenu.png.png";
+        private const string MainMenuBackgroundPath = "Assets/Art/Background/bg_mainmenu1.png";
+        private const string MainMenuLogoPath = "Assets/Art/UI/Branding/logo_cancertrace.png";
+        private const string MainMenuStartButtonPath = "Assets/Art/UI/Buttons/ui_btn_mainmenu_start.png";
+        private const string MainMenuContinueButtonPath = "Assets/Art/UI/Buttons/ui_btn_mainmenu_continue.png";
+        private const string MainMenuTutorialButtonPath = "Assets/Art/UI/Buttons/ui_btn_mainmenu_tutorial.png";
         private const string CasePanelPath = "Assets/Art/UI/Panels/ui_panel_case_info.png";
         private const string EvidencePanelPath = "Assets/Art/UI/Panels/ui_panel_evidence_board.png";
         private const string NotebookPanelPath = "Assets/Art/UI/Panels/ui_panel_notebook.png";
@@ -24,7 +28,6 @@ namespace CancerTrace.EditorTools
         private const string SubmitButtonPath = "Assets/Art/UI/Buttons/ui_btn_submit_normal.png.png";
         private const string BackButtonPath = "Assets/Art/UI/Buttons/ui_btn_back_normal.png.png";
         private const string NextButtonPath = "Assets/Art/UI/Buttons/ui_btn_next_normal.png.png";
-        private const string DetectiveIdlePath = "Assets/Art/Character/Detective/char_detective_girl_idle.png";
         private const string DetectiveSuccessPath = "Assets/Art/Character/Detective/char_detective_success.png";
 
         [MenuItem("CancerTrace/Phase B/Build Formal Scenes")]
@@ -33,6 +36,10 @@ namespace CancerTrace.EditorTools
             TMP_FontAsset font = LoadRequired<TMP_FontAsset>(FontPath);
             Sprite sharedBackground = LoadRequired<Sprite>(SharedBackgroundPath);
             Sprite mainMenuBackground = LoadRequired<Sprite>(MainMenuBackgroundPath);
+            Sprite mainMenuLogo = LoadRequired<Sprite>(MainMenuLogoPath);
+            Sprite mainMenuStartButton = LoadRequired<Sprite>(MainMenuStartButtonPath);
+            Sprite mainMenuContinueButton = LoadRequired<Sprite>(MainMenuContinueButtonPath);
+            Sprite mainMenuTutorialButton = LoadRequired<Sprite>(MainMenuTutorialButtonPath);
             Sprite casePanel = LoadRequired<Sprite>(CasePanelPath);
             Sprite evidencePanel = LoadRequired<Sprite>(EvidencePanelPath);
             Sprite notebookPanel = LoadRequired<Sprite>(NotebookPanelPath);
@@ -43,13 +50,18 @@ namespace CancerTrace.EditorTools
             Sprite submitButton = LoadRequired<Sprite>(SubmitButtonPath);
             Sprite backButton = LoadRequired<Sprite>(BackButtonPath);
             Sprite nextButton = LoadRequired<Sprite>(NextButtonPath);
-            Sprite detectiveIdle = LoadRequired<Sprite>(DetectiveIdlePath);
             Sprite detectiveSuccess = LoadRequired<Sprite>(DetectiveSuccessPath);
 
             BuildScene("MainMenu", font, root =>
             {
                 MainMenuController controller = root.AddComponent<MainMenuController>();
-                controller.BuildUi(font, mainMenuBackground, dialogPanel, nextButton, detectiveIdle);
+                controller.BuildUi(
+                    font,
+                    mainMenuBackground,
+                    mainMenuLogo,
+                    mainMenuStartButton,
+                    mainMenuContinueButton,
+                    mainMenuTutorialButton);
             });
             BuildScene("CaseAnalysis", font, root =>
             {
@@ -95,6 +107,7 @@ namespace CancerTrace.EditorTools
             Action<GameObject> build)
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            CreateMainCamera();
             GameObject root = new GameObject(sceneName + "Controller");
             build(root);
             ApplyFormalFont(root, formalFont);
@@ -103,6 +116,17 @@ namespace CancerTrace.EditorTools
             {
                 throw new InvalidOperationException("Could not save formal scene: " + path);
             }
+        }
+
+        private static void CreateMainCamera()
+        {
+            GameObject cameraObject = new GameObject("Main Camera", typeof(Camera));
+            cameraObject.tag = "MainCamera";
+            Camera camera = cameraObject.GetComponent<Camera>();
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color32(39, 48, 67, 255);
+            camera.orthographic = true;
+            cameraObject.transform.position = new Vector3(0f, 0f, -10f);
         }
 
         private static void ApplyFormalFont(GameObject root, TMP_FontAsset formalFont)

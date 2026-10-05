@@ -62,56 +62,59 @@ namespace CancerTrace.UI.Controllers
         public void BuildUi(
             TMP_FontAsset font,
             Sprite background,
-            Sprite panelSprite,
+            Sprite logo,
             Sprite startButtonSprite,
-            Sprite detectiveSprite)
+            Sprite continueButtonSprite,
+            Sprite tutorialButtonSprite)
         {
             Canvas canvas = CancerTraceUiFactory.CreateCanvas(transform);
-            CancerTraceUiFactory.CreateBackground(canvas.transform, background);
+            Image backgroundImage = CancerTraceUiFactory.CreateBackground(canvas.transform, background);
+            backgroundImage.preserveAspect = true;
 
-            Image panel = CancerTraceUiFactory.CreateImage(
-                "MenuPanel", canvas.transform, panelSprite, Color.white,
-                new Vector2(0.24f, 0.13f), new Vector2(0.76f, 0.88f),
-                Vector2.zero, Vector2.zero);
+            Image logoImage = CancerTraceUiFactory.CreateImage(
+                "Logo", canvas.transform, logo, Color.white,
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(-450f, 156f), new Vector2(450f, 484f));
+            logoImage.type = Image.Type.Simple;
+            logoImage.preserveAspect = true;
 
-            CancerTraceUiFactory.CreateText(
-                "Title", panel.transform, font, "CancerTrace", 82f,
-                TextAlignmentOptions.Center, CancerTraceUiFactory.Ink,
-                new Vector2(0.08f, 0.73f), new Vector2(0.92f, 0.94f),
-                Vector2.zero, Vector2.zero);
-            CancerTraceUiFactory.CreateText(
-                "Subtitle", panel.transform, font, "癌迹追踪 · 基因侦探事务所", 32f,
-                TextAlignmentOptions.Center, CancerTraceUiFactory.Accent,
-                new Vector2(0.1f, 0.65f), new Vector2(0.9f, 0.76f),
-                Vector2.zero, Vector2.zero);
-
-            Image character = CancerTraceUiFactory.CreateImage(
-                "Detective", panel.transform, detectiveSprite, Color.white,
-                new Vector2(0.07f, 0.23f), new Vector2(0.37f, 0.66f),
-                Vector2.zero, Vector2.zero);
-            character.type = Image.Type.Simple;
-            character.preserveAspect = true;
+            RectTransform buttonGroup = CancerTraceUiFactory.CreateRect(
+                "ButtonGroup", canvas.transform,
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(-180f, -393.5f), new Vector2(340f, 173.5f));
 
             newShiftButton = CancerTraceUiFactory.CreateButton(
-                "NewShiftButton", panel.transform, font, startButtonSprite,
-                "开始调查 / New Shift",
-                new Vector2(0.39f, 0.45f), new Vector2(0.88f, 0.59f),
-                Vector2.zero, Vector2.zero);
+                "NewShiftButton", buttonGroup, font, startButtonSprite, null,
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(-260f, 110.5f), new Vector2(260f, 283.5f));
             continueButton = CancerTraceUiFactory.CreateButton(
-                "ContinueButton", panel.transform, font, null,
-                "继续调查（Phase C）",
-                new Vector2(0.39f, 0.30f), new Vector2(0.88f, 0.41f),
-                Vector2.zero, Vector2.zero);
+                "ContinueButton", buttonGroup, font, continueButtonSprite, null,
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(-260f, -86.5f), new Vector2(260f, 86.5f));
             tutorialButton = CancerTraceUiFactory.CreateButton(
-                "TutorialButton", panel.transform, font, null,
-                "教程（本轮未实现）",
-                new Vector2(0.39f, 0.17f), new Vector2(0.88f, 0.27f),
-                Vector2.zero, Vector2.zero);
+                "TutorialButton", buttonGroup, font, tutorialButtonSprite, null,
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(-260f, -283.5f), new Vector2(260f, -110.5f));
+
+            ConfigureArtButton(newShiftButton);
+            ConfigureArtButton(continueButton);
+            ConfigureArtButton(tutorialButton);
+            continueButton.interactable = false;
+            tutorialButton.interactable = false;
+
             statusText = CancerTraceUiFactory.CreateText(
-                "Status", panel.transform, font, "正在读取案件档案……", 23f,
+                "Status", canvas.transform, font, "", 1f,
                 TextAlignmentOptions.Center, CancerTraceUiFactory.Muted,
-                new Vector2(0.08f, 0.04f), new Vector2(0.92f, 0.14f),
+                new Vector2(0f, 0f), new Vector2(0f, 0f),
                 Vector2.zero, Vector2.zero);
+            statusText.gameObject.SetActive(false);
+        }
+
+        private static void ConfigureArtButton(Button button)
+        {
+            Image image = button.GetComponent<Image>();
+            image.type = Image.Type.Simple;
+            image.preserveAspect = true;
         }
     }
 }
