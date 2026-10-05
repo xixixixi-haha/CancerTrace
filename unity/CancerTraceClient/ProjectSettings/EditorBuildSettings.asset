@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/MainMenu.unity
+    guid: a1fdaaea7e9248d45b32cd96f6a7d015
+  - enabled: 1
+    path: Assets/Scenes/CaseAnalysis.unity
+    guid: 3b5b44e4a8ed0344697a71798b743748
+  - enabled: 1
+    path: Assets/Scenes/CancerGalaxy.unity
+    guid: e8985b5b05ef35a41b0fb078952ee9c8
+  - enabled: 1
+    path: Assets/Scenes/ResultSummary.unity
+    guid: d9673113e2ab5714cb3cb201a33976f8
   m_configObjects: {}

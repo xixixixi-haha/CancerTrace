@@ -72,6 +72,7 @@ namespace CancerTrace.Gameplay.Flow
         internal PlayerCaseView(
             string caseId,
             string cellLineName,
+            int shiftNumber,
             int caseNumber,
             int casesPerShift,
             int remainingRp,
@@ -86,6 +87,7 @@ namespace CancerTrace.Gameplay.Flow
         {
             CaseId = caseId;
             CellLineName = cellLineName;
+            ShiftNumber = shiftNumber;
             CaseNumber = caseNumber;
             CasesPerShift = casesPerShift;
             RemainingRp = remainingRp;
@@ -101,6 +103,7 @@ namespace CancerTrace.Gameplay.Flow
 
         public string CaseId { get; private set; }
         public string CellLineName { get; private set; }
+        public int ShiftNumber { get; private set; }
         public int CaseNumber { get; private set; }
         public int CasesPerShift { get; private set; }
         public int RemainingRp { get; private set; }
