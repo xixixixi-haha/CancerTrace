@@ -59,20 +59,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Debug\CoreGameplaySmokeTest.cs" />
+    <Compile Include="Assets\Scripts\UI\Controllers\CancerTraceApp.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayViews.cs" />
     <Compile Include="Assets\Scripts\Data\Repositories\GameDataRepositories.cs" />
     <Compile Include="Assets\Scripts\Data\Save\SaveDataModels.cs" />
     <Compile Include="Assets\Scripts\Data\Validation\DataValidationResult.cs" />
+    <Compile Include="Assets\Scripts\UI\Controllers\CancerGalaxyController.cs" />
+    <Compile Include="Assets\Scripts\UI\Controllers\CancerTraceUiFactory.cs" />
+    <Compile Include="Assets\Scripts\UI\Controllers\MainMenuController.cs" />
+    <Compile Include="Assets\Scripts\UI\Controllers\CaseAnalysisController.cs" />
     <Compile Include="Assets\Scripts\Debug\RuntimeSaveSmokeTest.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayActionResult.cs" />
     <Compile Include="Assets\Scripts\Data\GameDataContext.cs" />
     <Compile Include="Assets\Scripts\Data\Models\GameDataModels.cs" />
+    <Compile Include="Assets\Scripts\Debug\PhaseBPlayModeSmokeRunner.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Runtime\GameRuntimeState.cs" />
     <Compile Include="Assets\Scripts\Debug\GameDataSmokeTest.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayService.cs" />
     <Compile Include="Assets\Scripts\Data\GameDataLoader.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Runtime\GameRuntimeService.cs" />
     <Compile Include="Assets\Scripts\Data\Save\SaveDataRepository.cs" />
+    <Compile Include="Assets\Scripts\UI\Controllers\ResultSummaryController.cs" />
     <Compile Include="Assets\Scripts\Data\Validation\DataValidator.cs" />
   </ItemGroup>
   <ItemGroup>

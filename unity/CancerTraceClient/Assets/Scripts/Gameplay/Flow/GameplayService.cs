@@ -407,6 +407,7 @@ namespace CancerTrace.Gameplay.Flow
             return new PlayerCaseView(
                 gameCase.CaseId,
                 gameCase.CellLineName,
+                state.CurrentShift,
                 state.CurrentCaseIndex + 1,
                 state.SelectedCaseIds.Count,
                 state.RemainingRp,
