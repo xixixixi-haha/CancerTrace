@@ -148,19 +148,22 @@ namespace CancerTrace.UI.Controllers
             colors.disabledColor = new Color(0.65f, 0.65f, 0.65f, 0.7f);
             button.colors = colors;
 
-            TMP_Text text = CreateText(
-                "Label",
-                image.transform,
-                font,
-                label,
-                27f,
-                TextAlignmentOptions.Center,
-                Ink,
-                Vector2.zero,
-                Vector2.one,
-                new Vector2(18f, 10f),
-                new Vector2(-18f, -10f));
-            text.fontStyle = FontStyles.Bold;
+            if (!string.IsNullOrEmpty(label))
+            {
+                TMP_Text text = CreateText(
+                    "Label",
+                    image.transform,
+                    font,
+                    label,
+                    27f,
+                    TextAlignmentOptions.Center,
+                    Ink,
+                    Vector2.zero,
+                    Vector2.one,
+                    new Vector2(18f, 10f),
+                    new Vector2(-18f, -10f));
+                text.fontStyle = FontStyles.Bold;
+            }
             return button;
         }
 

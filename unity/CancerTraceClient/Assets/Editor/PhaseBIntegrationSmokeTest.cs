@@ -69,6 +69,15 @@ namespace CancerTrace.EditorTools
                 Require(scene.IsValid(), "Could not open scene: " + ScenePaths[sceneIndex]);
                 Require(UnityEngine.Object.FindObjectOfType(expectedControllers[sceneIndex]) != null,
                     "Expected controller is missing from " + ScenePaths[sceneIndex]);
+                Require(Camera.main != null,
+                    "Main Camera is missing from " + ScenePaths[sceneIndex]);
+                Canvas[] canvases = UnityEngine.Object.FindObjectsOfType<Canvas>(true);
+                Require(canvases.Length == 1 && canvases[0].renderMode == RenderMode.ScreenSpaceOverlay,
+                    "Formal scene Canvas is missing or has an unexpected render mode: " + ScenePaths[sceneIndex]);
+                CanvasScaler scaler = canvases[0].GetComponent<CanvasScaler>();
+                Require(scaler != null && scaler.uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize &&
+                        scaler.referenceResolution == new Vector2(1920f, 1080f),
+                    "Canvas Scaler is not configured for the 1920x1080 visual baseline: " + ScenePaths[sceneIndex]);
                 Require(UnityEngine.Object.FindObjectsOfType<Text>(true).Length == 0,
                     "Legacy UGUI Text exists in " + ScenePaths[sceneIndex]);
 
@@ -79,7 +88,35 @@ namespace CancerTrace.EditorTools
                     Require(texts[textIndex].font == formalFont,
                         "TMP text does not use the formal Chinese font: " + texts[textIndex].name);
                 }
+                ValidateNoDuplicateArtButtonLabels(scene.name);
                 RequireNoMissingScripts(scene);
+            }
+        }
+
+        private static void ValidateNoDuplicateArtButtonLabels(string sceneName)
+        {
+            string[] artButtonNames;
+            switch (sceneName)
+            {
+                case "CaseAnalysis":
+                    artButtonNames = new[] { "GeneScan", "CancerGalaxy", "AiAssistant", "Submit" };
+                    break;
+                case "CancerGalaxy":
+                    artButtonNames = new[] { "Back" };
+                    break;
+                case "ResultSummary":
+                    artButtonNames = new[] { "NextCase" };
+                    break;
+                default:
+                    return;
+            }
+
+            for (int index = 0; index < artButtonNames.Length; index++)
+            {
+                GameObject buttonObject = GameObject.Find(artButtonNames[index]);
+                Require(buttonObject != null, "Expected art button is missing: " + artButtonNames[index]);
+                Require(buttonObject.GetComponentInChildren<TMP_Text>(true) == null,
+                    "Art button has a duplicate TMP label: " + artButtonNames[index]);
             }
         }
 

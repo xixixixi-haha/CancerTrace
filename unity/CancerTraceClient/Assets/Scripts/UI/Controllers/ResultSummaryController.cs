@@ -155,7 +155,7 @@ namespace CancerTrace.UI.Controllers
 
             Image character = CancerTraceUiFactory.CreateImage(
                 "Character", panel.transform, characterSprite, Color.white,
-                new Vector2(0.05f, 0.02f), new Vector2(0.25f, 0.22f), Vector2.zero, Vector2.zero);
+                new Vector2(0.06f, 0.03f), new Vector2(0.18f, 0.16f), Vector2.zero, Vector2.zero);
             character.type = Image.Type.Simple;
             character.preserveAspect = true;
 
@@ -164,7 +164,7 @@ namespace CancerTrace.UI.Controllers
                 TextAlignmentOptions.Center, CancerTraceUiFactory.Accent,
                 new Vector2(0.42f, 0.13f), new Vector2(0.88f, 0.22f), Vector2.zero, Vector2.zero);
             nextButton = CancerTraceUiFactory.CreateButton(
-                "NextCase", panel.transform, font, nextButtonSprite, "Next Case / 下一个案件",
+                "NextCase", panel.transform, font, nextButtonSprite, null,
                 new Vector2(0.52f, 0.03f), new Vector2(0.85f, 0.13f), Vector2.zero, Vector2.zero);
             feedbackText = CancerTraceUiFactory.CreateText(
                 "Feedback", canvas.transform, font, "", 20f,

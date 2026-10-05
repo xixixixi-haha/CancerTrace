@@ -24,6 +24,9 @@ namespace CancerTrace.UI.Controllers
         [SerializeField] private Button galaxyButton;
         [SerializeField] private Button aiButton;
         [SerializeField] private Button submitButton;
+        [SerializeField] private TMP_Text geneScanCostText;
+        [SerializeField] private TMP_Text galaxyCostText;
+        [SerializeField] private TMP_Text aiCostText;
         [SerializeField] private Button[] diagnosisButtons;
 
         private CancerTraceApp app;
@@ -98,16 +101,18 @@ namespace CancerTrace.UI.Controllers
 
         private void RenderTools()
         {
-            RenderToolButton(geneScanButton, "Gene Scan", currentCase.GeneScan);
-            RenderToolButton(galaxyButton, "Cancer Galaxy", currentCase.CancerGalaxy);
-            RenderToolButton(aiButton, "AI Assistant", currentCase.AiAssistant);
+            RenderToolButton(geneScanButton, geneScanCostText, currentCase.GeneScan);
+            RenderToolButton(galaxyButton, galaxyCostText, currentCase.CancerGalaxy);
+            RenderToolButton(aiButton, aiCostText, currentCase.AiAssistant);
         }
 
-        private static void RenderToolButton(Button button, string title, ToolAvailabilityView tool)
+        private static void RenderToolButton(
+            Button button,
+            TMP_Text caption,
+            ToolAvailabilityView tool)
         {
-            CancerTraceUiFactory.SetButtonLabel(
-                button,
-                tool.Used ? title + "\nUsed" : title + "\n" + tool.Cost + " RP");
+            caption.text = tool.Used ? "已使用" : tool.Cost + " RP";
+            caption.color = tool.Used ? CancerTraceUiFactory.Muted : CancerTraceUiFactory.Accent;
             button.interactable = tool.CanUse;
         }
 
@@ -127,7 +132,7 @@ namespace CancerTrace.UI.Controllers
 
                 button.gameObject.SetActive(true);
                 CancerTypeOptionView option = options[index];
-                CancerTraceUiFactory.SetButtonLabel(button, option.LabelZh + "\n" + option.ClassId);
+                CancerTraceUiFactory.SetButtonLabel(button, option.LabelZh);
                 string classId = option.ClassId;
                 button.onClick.AddListener(() => SelectDiagnosis(classId));
                 Image image = button.GetComponent<Image>();
@@ -269,20 +274,20 @@ namespace CancerTrace.UI.Controllers
                 "TopBar", canvas.transform, casePanelSprite, Color.white,
                 new Vector2(0.025f, 0.87f), new Vector2(0.975f, 0.98f), Vector2.zero, Vector2.zero);
             shiftText = CancerTraceUiFactory.CreateText(
-                "Shift", top.transform, font, "Shift -", 27f, TextAlignmentOptions.Left,
-                CancerTraceUiFactory.Ink, new Vector2(0.03f, 0.1f), new Vector2(0.18f, 0.9f), Vector2.zero, Vector2.zero);
+                "Shift", top.transform, font, "Shift -", 23f, TextAlignmentOptions.Left,
+                CancerTraceUiFactory.Ink, new Vector2(0.03f, 0.1f), new Vector2(0.17f, 0.9f), Vector2.zero, Vector2.zero);
             caseText = CancerTraceUiFactory.CreateText(
-                "Case", top.transform, font, "Case - / -", 27f, TextAlignmentOptions.Left,
-                CancerTraceUiFactory.Ink, new Vector2(0.18f, 0.1f), new Vector2(0.35f, 0.9f), Vector2.zero, Vector2.zero);
+                "Case", top.transform, font, "Case - / -", 23f, TextAlignmentOptions.Left,
+                CancerTraceUiFactory.Ink, new Vector2(0.17f, 0.1f), new Vector2(0.32f, 0.9f), Vector2.zero, Vector2.zero);
             caseIdText = CancerTraceUiFactory.CreateText(
-                "CaseId", top.transform, font, "Case ID", 22f, TextAlignmentOptions.Center,
-                CancerTraceUiFactory.Ink, new Vector2(0.36f, 0.06f), new Vector2(0.68f, 0.94f), Vector2.zero, Vector2.zero);
+                "CaseId", top.transform, font, "Case ID", 19f, TextAlignmentOptions.Center,
+                CancerTraceUiFactory.Ink, new Vector2(0.33f, 0.06f), new Vector2(0.64f, 0.94f), Vector2.zero, Vector2.zero);
             rpText = CancerTraceUiFactory.CreateText(
-                "RP", top.transform, font, "Remaining RP", 27f, TextAlignmentOptions.Center,
-                CancerTraceUiFactory.Accent, new Vector2(0.68f, 0.1f), new Vector2(0.84f, 0.9f), Vector2.zero, Vector2.zero);
+                "RP", top.transform, font, "Remaining RP", 22f, TextAlignmentOptions.Center,
+                CancerTraceUiFactory.Accent, new Vector2(0.65f, 0.1f), new Vector2(0.82f, 0.9f), Vector2.zero, Vector2.zero);
             scoreText = CancerTraceUiFactory.CreateText(
-                "Score", top.transform, font, "Score", 27f, TextAlignmentOptions.Center,
-                CancerTraceUiFactory.Teal, new Vector2(0.84f, 0.1f), new Vector2(0.98f, 0.9f), Vector2.zero, Vector2.zero);
+                "Score", top.transform, font, "Score", 22f, TextAlignmentOptions.Center,
+                CancerTraceUiFactory.Teal, new Vector2(0.82f, 0.1f), new Vector2(0.98f, 0.9f), Vector2.zero, Vector2.zero);
 
             Image left = CancerTraceUiFactory.CreateImage(
                 "CaseNotebook", canvas.transform, notePanelSprite, Color.white,
@@ -295,14 +300,23 @@ namespace CancerTrace.UI.Controllers
                 "InitialClues", left.transform, font, "", 25f, TextAlignmentOptions.TopLeft,
                 CancerTraceUiFactory.Ink, new Vector2(0.09f, 0.55f), new Vector2(0.91f, 0.81f), Vector2.zero, Vector2.zero);
             geneScanButton = CancerTraceUiFactory.CreateButton(
-                "GeneScan", left.transform, font, geneButtonSprite, "Gene Scan",
-                new Vector2(0.08f, 0.39f), new Vector2(0.92f, 0.52f), Vector2.zero, Vector2.zero);
+                "GeneScan", left.transform, font, geneButtonSprite, null,
+                new Vector2(0.08f, 0.40f), new Vector2(0.92f, 0.51f), Vector2.zero, Vector2.zero);
+            geneScanCostText = CancerTraceUiFactory.CreateText(
+                "GeneScanCost", left.transform, font, "10 RP", 19f, TextAlignmentOptions.Right,
+                CancerTraceUiFactory.Accent, new Vector2(0.08f, 0.51f), new Vector2(0.92f, 0.55f), Vector2.zero, Vector2.zero);
             galaxyButton = CancerTraceUiFactory.CreateButton(
-                "CancerGalaxy", left.transform, font, galaxyButtonSprite, "Cancer Galaxy",
-                new Vector2(0.08f, 0.23f), new Vector2(0.92f, 0.36f), Vector2.zero, Vector2.zero);
+                "CancerGalaxy", left.transform, font, galaxyButtonSprite, null,
+                new Vector2(0.08f, 0.24f), new Vector2(0.92f, 0.35f), Vector2.zero, Vector2.zero);
+            galaxyCostText = CancerTraceUiFactory.CreateText(
+                "CancerGalaxyCost", left.transform, font, "25 RP", 19f, TextAlignmentOptions.Right,
+                CancerTraceUiFactory.Accent, new Vector2(0.08f, 0.35f), new Vector2(0.92f, 0.39f), Vector2.zero, Vector2.zero);
             aiButton = CancerTraceUiFactory.CreateButton(
-                "AiAssistant", left.transform, font, aiButtonSprite, "AI Assistant",
-                new Vector2(0.08f, 0.07f), new Vector2(0.92f, 0.20f), Vector2.zero, Vector2.zero);
+                "AiAssistant", left.transform, font, aiButtonSprite, null,
+                new Vector2(0.08f, 0.08f), new Vector2(0.92f, 0.19f), Vector2.zero, Vector2.zero);
+            aiCostText = CancerTraceUiFactory.CreateText(
+                "AiAssistantCost", left.transform, font, "40 RP", 19f, TextAlignmentOptions.Right,
+                CancerTraceUiFactory.Accent, new Vector2(0.08f, 0.19f), new Vector2(0.92f, 0.23f), Vector2.zero, Vector2.zero);
 
             Image middle = CancerTraceUiFactory.CreateImage(
                 "EvidenceBoard", canvas.transform, evidencePanelSprite, Color.white,
@@ -339,11 +353,11 @@ namespace CancerTrace.UI.Controllers
                     "Diagnosis" + index, right.transform, font, null, "Cancer Type",
                     new Vector2(xMin, yMin), new Vector2(xMax, yMax), Vector2.zero, Vector2.zero);
                 TMP_Text buttonLabel = CancerTraceUiFactory.GetButtonLabel(diagnosisButtons[index]);
-                buttonLabel.fontSize = 18f;
+                buttonLabel.fontSize = 20f;
             }
 
             submitButton = CancerTraceUiFactory.CreateButton(
-                "Submit", right.transform, font, submitButtonSprite, "Submit Diagnosis / 提交诊断",
+                "Submit", right.transform, font, submitButtonSprite, null,
                 new Vector2(0.12f, 0.08f), new Vector2(0.88f, 0.20f), Vector2.zero, Vector2.zero);
 
             feedbackText = CancerTraceUiFactory.CreateText(

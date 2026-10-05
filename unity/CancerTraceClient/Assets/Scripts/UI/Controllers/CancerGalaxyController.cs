@@ -142,15 +142,8 @@ namespace CancerTrace.UI.Controllers
             currentRect.sizeDelta = new Vector2(25f, 25f);
             current.GetComponent<Image>().color = new Color32(255, 243, 129, 255);
 
-            StringBuilder legend = new StringBuilder();
-            legend.AppendLine("Reference Nodes  " + galaxy.ReferenceNodes.Count);
-            foreach (KeyValuePair<string, int> entry in classColors)
-            {
-                legend.Append("● ");
-                legend.Append(entry.Key);
-                legend.Append("   ");
-            }
-            legendText.text = legend.ToString();
+            legendText.text = "Reference Nodes  " + galaxy.ReferenceNodes.Count +
+                              "  ·  8 categories";
         }
 
         public void BuildUi(
@@ -162,7 +155,7 @@ namespace CancerTrace.UI.Controllers
             Canvas canvas = CancerTraceUiFactory.CreateCanvas(transform);
             CancerTraceUiFactory.CreateBackground(canvas.transform, background);
             CancerTraceUiFactory.CreateText(
-                "Title", canvas.transform, font, "Cancer Galaxy / 癌症星图", 48f,
+                "Title", canvas.transform, font, "Cancer Galaxy / 癌症星图", 44f,
                 TextAlignmentOptions.Center, CancerTraceUiFactory.Ink,
                 new Vector2(0.26f, 0.9f), new Vector2(0.74f, 0.98f), Vector2.zero, Vector2.zero);
 
@@ -170,17 +163,17 @@ namespace CancerTrace.UI.Controllers
                 "GalaxyPanel", canvas.transform, panelSprite, Color.white,
                 new Vector2(0.03f, 0.16f), new Vector2(0.69f, 0.89f), Vector2.zero, Vector2.zero);
             caseNodeText = CancerTraceUiFactory.CreateText(
-                "CaseNodeInfo", plotPanel.transform, font, "Current Case Node", 21f,
+                "CaseNodeInfo", plotPanel.transform, font, "Current Case Node", 19f,
                 TextAlignmentOptions.TopLeft, CancerTraceUiFactory.Ink,
                 new Vector2(0.04f, 0.78f), new Vector2(0.29f, 0.96f), Vector2.zero, Vector2.zero);
             rpText = CancerTraceUiFactory.CreateText(
-                "RP", plotPanel.transform, font, "Remaining RP", 23f,
+                "RP", plotPanel.transform, font, "Remaining RP", 20f,
                 TextAlignmentOptions.TopRight, CancerTraceUiFactory.Accent,
                 new Vector2(0.7f, 0.87f), new Vector2(0.95f, 0.96f), Vector2.zero, Vector2.zero);
             legendText = CancerTraceUiFactory.CreateText(
-                "Legend", plotPanel.transform, font, "Reference Nodes", 16f,
-                TextAlignmentOptions.TopLeft, CancerTraceUiFactory.Muted,
-                new Vector2(0.30f, 0.80f), new Vector2(0.69f, 0.96f), Vector2.zero, Vector2.zero);
+                "Legend", plotPanel.transform, font, "Reference Nodes", 17f,
+                TextAlignmentOptions.Center, CancerTraceUiFactory.Muted,
+                new Vector2(0.30f, 0.82f), new Vector2(0.70f, 0.94f), Vector2.zero, Vector2.zero);
             Image plotBackground = CancerTraceUiFactory.CreateImage(
                 "PlotArea", plotPanel.transform, null, new Color32(48, 54, 83, 232),
                 new Vector2(0.04f, 0.07f), new Vector2(0.96f, 0.77f), Vector2.zero, Vector2.zero);
@@ -195,10 +188,10 @@ namespace CancerTrace.UI.Controllers
                 new Vector2(0.07f, 0.11f), new Vector2(0.93f, 0.94f), Vector2.zero, Vector2.zero);
 
             backButton = CancerTraceUiFactory.CreateButton(
-                "Back", canvas.transform, font, backButtonSprite, "返回案件 / Back",
+                "Back", canvas.transform, font, backButtonSprite, null,
                 new Vector2(0.035f, 0.035f), new Vector2(0.20f, 0.125f), Vector2.zero, Vector2.zero);
             feedbackText = CancerTraceUiFactory.CreateText(
-                "Feedback", canvas.transform, font, "", 21f, TextAlignmentOptions.Center,
+                "Feedback", canvas.transform, font, "", 18f, TextAlignmentOptions.Center,
                 CancerTraceUiFactory.Ink, new Vector2(0.22f, 0.035f), new Vector2(0.96f, 0.125f), Vector2.zero, Vector2.zero);
         }
     }
