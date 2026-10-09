@@ -21,14 +21,19 @@ namespace CancerTrace.EditorTools
         private const string CasePanelPath = "Assets/Art/UI/Panels/ui_panel_case_info.png";
         private const string EvidencePanelPath = "Assets/Art/UI/Panels/ui_panel_evidence_board.png";
         private const string NotebookPanelPath = "Assets/Art/UI/Panels/ui_panel_notebook.png";
-        private const string DialogPanelPath = "Assets/Art/UI/Panels/ui_panel_dialog.png";
         private const string GeneButtonPath = "Assets/Art/UI/Buttons/ui_btn_gene_scan_normal.png.png";
         private const string ObserveButtonPath = "Assets/Art/UI/Buttons/ui_btn_observe_normal.png.png";
         private const string HintButtonPath = "Assets/Art/UI/Buttons/ui_btn_hint_normal.png.png";
         private const string SubmitButtonPath = "Assets/Art/UI/Buttons/ui_btn_submit_normal.png.png";
+        private const string LockedEvidencePath = "Assets/Art/UI/TitleBanners/ui_evidence_locked.png";
         private const string BackButtonPath = "Assets/Art/UI/Buttons/ui_btn_back_normal.png.png";
         private const string NextButtonPath = "Assets/Art/UI/Buttons/ui_btn_next_normal.png.png";
-        private const string DetectiveSuccessPath = "Assets/Art/Character/Detective/char_detective_success.png";
+        private const string ResultTitlePath = "Assets/Art/UI/TitleBanners/ui_title_result_summary.png";
+        private const string ResultCorrectPath = "Assets/Art/UI/TitleBanners/ui_result_correct.png";
+        private const string ResultWrongPath = "Assets/Art/UI/TitleBanners/ui_result_wrong.png";
+        private const string ScoreStarPath = "Assets/Art/Icons/Common/icon_star.png";
+        private const string AiReviewIconPath = "Assets/Art/Icons/Common/icon_lightbulb.png";
+        private const string CancerIconDirectory = "Assets/Art/Icons/CancerTypes/";
 
         [MenuItem("CancerTrace/Phase B/Build Formal Scenes")]
         public static void BuildFormalScenes()
@@ -43,14 +48,19 @@ namespace CancerTrace.EditorTools
             Sprite casePanel = LoadRequired<Sprite>(CasePanelPath);
             Sprite evidencePanel = LoadRequired<Sprite>(EvidencePanelPath);
             Sprite notebookPanel = LoadRequired<Sprite>(NotebookPanelPath);
-            Sprite dialogPanel = LoadRequired<Sprite>(DialogPanelPath);
             Sprite geneButton = LoadRequired<Sprite>(GeneButtonPath);
             Sprite observeButton = LoadRequired<Sprite>(ObserveButtonPath);
             Sprite hintButton = LoadRequired<Sprite>(HintButtonPath);
             Sprite submitButton = LoadRequired<Sprite>(SubmitButtonPath);
+            Sprite lockedEvidence = LoadRequired<Sprite>(LockedEvidencePath);
             Sprite backButton = LoadRequired<Sprite>(BackButtonPath);
             Sprite nextButton = LoadRequired<Sprite>(NextButtonPath);
-            Sprite detectiveSuccess = LoadRequired<Sprite>(DetectiveSuccessPath);
+            Sprite resultTitle = LoadRequired<Sprite>(ResultTitlePath);
+            Sprite resultCorrect = LoadRequired<Sprite>(ResultCorrectPath);
+            Sprite resultWrong = LoadRequired<Sprite>(ResultWrongPath);
+            Sprite scoreStar = LoadRequired<Sprite>(ScoreStarPath);
+            Sprite aiReviewIcon = LoadRequired<Sprite>(AiReviewIconPath);
+            Sprite[] cancerTypeIcons = LoadCancerTypeIcons();
 
             BuildScene("MainMenu", font, root =>
             {
@@ -75,7 +85,8 @@ namespace CancerTrace.EditorTools
                     geneButton,
                     observeButton,
                     hintButton,
-                    submitButton);
+                    submitButton,
+                    lockedEvidence);
             });
             BuildScene("CancerGalaxy", font, root =>
             {
@@ -85,7 +96,16 @@ namespace CancerTrace.EditorTools
             BuildScene("ResultSummary", font, root =>
             {
                 ResultSummaryController controller = root.AddComponent<ResultSummaryController>();
-                controller.BuildUi(font, sharedBackground, dialogPanel, nextButton, detectiveSuccess);
+                controller.BuildUi(
+                    font,
+                    sharedBackground,
+                    resultTitle,
+                    resultCorrect,
+                    resultWrong,
+                    cancerTypeIcons,
+                    scoreStar,
+                    aiReviewIcon,
+                    nextButton);
             });
 
             EditorBuildSettings.scenes = new[]
@@ -99,6 +119,39 @@ namespace CancerTrace.EditorTools
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             Debug.Log("PHASE_B_SCENES_BUILT: MainMenu, CaseAnalysis, CancerGalaxy, ResultSummary");
+        }
+
+        [MenuItem("CancerTrace/Phase B/Rebuild Result Summary UI")]
+        public static void RebuildResultSummaryUi()
+        {
+            TMP_FontAsset font = LoadRequired<TMP_FontAsset>(FontPath);
+            Sprite sharedBackground = LoadRequired<Sprite>(SharedBackgroundPath);
+            Sprite nextButton = LoadRequired<Sprite>(NextButtonPath);
+            Sprite resultTitle = LoadRequired<Sprite>(ResultTitlePath);
+            Sprite resultCorrect = LoadRequired<Sprite>(ResultCorrectPath);
+            Sprite resultWrong = LoadRequired<Sprite>(ResultWrongPath);
+            Sprite scoreStar = LoadRequired<Sprite>(ScoreStarPath);
+            Sprite aiReviewIcon = LoadRequired<Sprite>(AiReviewIconPath);
+            Sprite[] cancerTypeIcons = LoadCancerTypeIcons();
+
+            BuildScene("ResultSummary", font, root =>
+            {
+                ResultSummaryController controller = root.AddComponent<ResultSummaryController>();
+                controller.BuildUi(
+                    font,
+                    sharedBackground,
+                    resultTitle,
+                    resultCorrect,
+                    resultWrong,
+                    cancerTypeIcons,
+                    scoreStar,
+                    aiReviewIcon,
+                    nextButton);
+            });
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log("RESULT_SUMMARY_UI_REBUILT");
         }
 
         private static void BuildScene(
@@ -156,6 +209,21 @@ namespace CancerTrace.EditorTools
             T asset = AssetDatabase.LoadAssetAtPath<T>(path);
             if (asset == null) throw new InvalidOperationException("Required asset is missing: " + path);
             return asset;
+        }
+
+        private static Sprite[] LoadCancerTypeIcons()
+        {
+            return new[]
+            {
+                LoadRequired<Sprite>(CancerIconDirectory + "icon_cancer_lung.png"),
+                LoadRequired<Sprite>(CancerIconDirectory + "icon_cancer_skin.png"),
+                LoadRequired<Sprite>(CancerIconDirectory + "icon_cancer_cns_brain.png"),
+                LoadRequired<Sprite>(CancerIconDirectory + "icon_cancer_bowel.png"),
+                LoadRequired<Sprite>(CancerIconDirectory + "icon_cancer_esophagus_stomach.png"),
+                LoadRequired<Sprite>(CancerIconDirectory + "icon_cancer_breast.png"),
+                LoadRequired<Sprite>(CancerIconDirectory + "icon_cancer_bone.png"),
+                LoadRequired<Sprite>(CancerIconDirectory + "icon_cancer_ovary_fallopian.png")
+            };
         }
     }
 }

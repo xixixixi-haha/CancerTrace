@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using System.Text;
 using CancerTrace.Gameplay.Flow;
+using CancerTrace.Gameplay.Tutorial;
+using CancerTrace.UI.Tutorial;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,9 +18,25 @@ namespace CancerTrace.UI.Controllers
         [SerializeField] private TMP_Text feedbackText;
         [SerializeField] private RectTransform plotArea;
         [SerializeField] private Button backButton;
+        [SerializeField] private TMP_Text caseIdText;
+        [SerializeField] private TMP_Text coordinatesText;
+        [SerializeField] private GameObject[] nearbyItems;
+        [SerializeField] private TMP_Text[] nearbyRankTexts;
+        [SerializeField] private TMP_Text[] nearbySampleIdTexts;
+        [SerializeField] private TMP_Text[] nearbyCancerTypeTexts;
+        [SerializeField] private TMP_Text[] nearbyDistanceTexts;
 
         private CancerTraceApp app;
         private bool initialized;
+        private TutorialGuideController tutorialGuide;
+        private GalaxyTutorialStage tutorialStage;
+
+        private enum GalaxyTutorialStage
+        {
+            None,
+            GalaxyReview,
+            GalaxyReturn
+        }
 
         private static readonly Color[] NodeColors =
         {
@@ -36,9 +53,9 @@ namespace CancerTrace.UI.Controllers
         private void Awake()
         {
             app = CancerTraceApp.EnsureInstance();
-            backButton.onClick.AddListener(() => SceneManager.LoadScene("CaseAnalysis"));
+            backButton.onClick.AddListener(ReturnToCaseAnalysis);
             backButton.interactable = false;
-            feedbackText.text = "正在读取 Cancer Galaxy 安全视图……";
+            feedbackText.text = "正在读取癌症星图安全视图……";
         }
 
         private void Update()
@@ -52,6 +69,12 @@ namespace CancerTrace.UI.Controllers
             }
 
             initialized = true;
+            if (app.Tutorial.IsTutorialActive)
+            {
+                InitializeTutorialGalaxy();
+                return;
+            }
+
             GameplayActionResult<PlayerCaseView> caseResult = app.Gameplay.GetCurrentCase();
             GameplayActionResult<EvidenceBoardView> evidenceResult = app.Gameplay.GetEvidenceBoard();
             if (!caseResult.Success || !evidenceResult.Success || evidenceResult.Data.GalaxyEvidence == null)
@@ -61,37 +84,102 @@ namespace CancerTrace.UI.Controllers
                 return;
             }
 
-            Render(caseResult.Data, evidenceResult.Data.GalaxyEvidence);
+            Render(caseResult.Data.CaseId, evidenceResult.Data.GalaxyEvidence);
             backButton.interactable = true;
         }
 
-        private void Render(PlayerCaseView playerCase, CancerGalaxyView galaxy)
+        private void OnDestroy()
         {
-            caseNodeText.text =
-                "Current Case Node\n" + playerCase.CaseId +
-                "\nUMAP  (" + galaxy.UmapX.ToString("0.###") + ", " +
-                galaxy.UmapY.ToString("0.###") + ")";
-            rpText.text = "Remaining RP  " + galaxy.RemainingRp;
-
-            StringBuilder nearby = new StringBuilder();
-            nearby.AppendLine("最近 5 个 nearbyReferences");
-            for (int index = 0; index < galaxy.NearbyReferences.Count; index++)
+            if (tutorialGuide != null)
             {
-                NearbyReferenceView item = galaxy.NearbyReferences[index];
-                nearby.Append(index + 1);
-                nearby.Append(". ");
-                nearby.Append(item.CellLineName);
-                nearby.Append("\n   ");
-                nearby.Append(item.LabelZh);
-                nearby.Append(" / ");
-                nearby.Append(item.ClassId);
-                nearby.Append("   distance ");
-                nearby.AppendLine(item.Distance.ToString("0.0000"));
+                tutorialGuide.RuntimeNextRequested -= ShowTutorialReturnStage;
             }
-            nearbyText.text = nearby.ToString();
+        }
+
+        private void InitializeTutorialGalaxy()
+        {
+            CancerGalaxyView galaxy;
+            string errorMessage;
+            if (!app.Tutorial.TryGetCancerGalaxyView(out galaxy, out errorMessage))
+            {
+                feedbackText.text = errorMessage;
+                backButton.interactable = true;
+                return;
+            }
+
+            Render(TutorialService.FixedTutorialCaseId, galaxy);
+            tutorialGuide = FindObjectOfType<TutorialGuideController>(true);
+            if (app.Tutorial.CurrentSession.CurrentStepIndex != TutorialService.CancerGalaxyReviewStepIndex)
+            {
+                if (tutorialGuide != null) tutorialGuide.HideRuntimeTutorial();
+                backButton.interactable = true;
+                return;
+            }
+            if (tutorialGuide == null)
+            {
+                feedbackText.text = "CancerGalaxy 教学引导层缺失，请先执行增量安装菜单。";
+                backButton.interactable = false;
+                return;
+            }
+
+            tutorialStage = GalaxyTutorialStage.GalaxyReview;
+            tutorialGuide.RuntimeNextRequested -= ShowTutorialReturnStage;
+            tutorialGuide.RuntimeNextRequested += ShowTutorialReturnStage;
+            tutorialGuide.BeginRuntimeTutorial(0);
+            backButton.interactable = false;
+        }
+
+        private void ShowTutorialReturnStage()
+        {
+            if (tutorialStage != GalaxyTutorialStage.GalaxyReview) return;
+            tutorialStage = GalaxyTutorialStage.GalaxyReturn;
+            tutorialGuide.BeginRuntimeTutorial(1);
+            backButton.interactable = true;
+        }
+
+        private void ReturnToCaseAnalysis()
+        {
+            if (app != null && app.Tutorial.IsTutorialActive &&
+                app.Tutorial.CurrentSession.CurrentStepIndex == TutorialService.CancerGalaxyReviewStepIndex)
+            {
+                if (tutorialStage != GalaxyTutorialStage.GalaxyReturn) return;
+
+                string errorMessage;
+                if (!app.Tutorial.TryCompleteCancerGalaxy(out errorMessage))
+                {
+                    feedbackText.text = errorMessage;
+                    return;
+                }
+
+                Debug.Log("Tutorial Phase 2C completed. Ready for AI tutorial.");
+            }
+
+            SceneManager.LoadScene("CaseAnalysis");
+        }
+
+        private void Render(string caseId, CancerGalaxyView galaxy)
+        {
+            caseIdText.text = caseId;
+            rpText.text = "Remaining RP\n" + galaxy.RemainingRp;
+            coordinatesText.text =
+                "(" + galaxy.UmapX.ToString("0.###") + ", " +
+                galaxy.UmapY.ToString("0.###") + ")";
+
+            for (int index = 0; index < nearbyItems.Length; index++)
+            {
+                bool hasItem = index < galaxy.NearbyReferences.Count;
+                nearbyItems[index].SetActive(hasItem);
+                if (!hasItem) continue;
+
+                NearbyReferenceView item = galaxy.NearbyReferences[index];
+                nearbyRankTexts[index].text = (index + 1).ToString();
+                nearbySampleIdTexts[index].text = item.CellLineName;
+                nearbyCancerTypeTexts[index].text = item.LabelZh;
+                nearbyDistanceTexts[index].text = item.Distance.ToString("0.0000");
+            }
 
             RenderNodes(galaxy);
-            feedbackText.text = "distance 表示嵌入空间距离，不是概率，也不构成诊断推荐。";
+            feedbackText.text = string.Empty;
         }
 
         private void RenderNodes(CancerGalaxyView galaxy)
@@ -142,8 +230,6 @@ namespace CancerTrace.UI.Controllers
             currentRect.sizeDelta = new Vector2(25f, 25f);
             current.GetComponent<Image>().color = new Color32(255, 243, 129, 255);
 
-            legendText.text = "Reference Nodes  " + galaxy.ReferenceNodes.Count +
-                              "  ·  8 categories";
         }
 
         public void BuildUi(

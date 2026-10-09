@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ResultSummary.unity
     guid: d9673113e2ab5714cb3cb201a33976f8
+  - enabled: 1
+    path: Assets/Scenes/ShiftSummary.unity
+    guid: e60dac132ec347bf93de3698d56135bd
   m_configObjects: {}

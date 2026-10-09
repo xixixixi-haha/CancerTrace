@@ -80,6 +80,101 @@ Phase B is implemented and verified. The playable path is:
 - Add final visual refinement, responsive/layout polish, dedicated UI art, animation, and audio.
 - Add Shift-complete presentation/summary navigation and final build QA when in scope.
 
+### CaseAnalysis UI/interaction design confirmation (2026-10-05; design only)
+
+The following confirmed CaseAnalysis visual revision is compatible with the frozen v1.0 rules and the existing `GameplayService` / safe view-model contract. This is a UI-layer follow-up; this confirmation makes no gameplay, scene, prefab, JSON, or code change.
+
+- Use a three-column CaseAnalysis layout: left **调查工具**, centre **Evidence Board**, right **最终诊断**. Keep Shift, Case, Case ID, Remaining RP, and Score in the top header.
+- Remove the separate large Initial Clues presentation panel. The two free Initial Clues remain unchanged and are shown directly in the Evidence Board at case start; this is only a presentation relocation.
+- The left column contains only the three frozen paid tools: 扫描 / Gene Scan / 10 RP, 观察 / Cancer Galaxy / 25 RP, and 提示 / AI Assistant / 40 RP.
+- The Evidence Board initially renders the two Initial Clues plus locked-state entries for Gene Scan, Galaxy evidence, and AI assistance. It progressively fills with the three Gene Scan clues, a Galaxy evidence card, and AI output after their respective successful first uses.
+- Gene Scan remains a once-per-Case 10 RP action that unlocks exactly the formal three extra clues, for a maximum of `2 Initial + 3 Gene Scan` clues.
+- Cancer Galaxy remains a once-per-Case 25 RP action. Its first successful use unlocks Galaxy evidence and opens `CancerGalaxy`; the board stores only a compact evidence card, not the full star map. Before unlock, the card reads “星图证据 / 待解锁”; after unlock, it reads “星图证据 / 已解锁 / 点击查看”.
+- **Required UI-layer behavior:** an unlocked Galaxy evidence card must navigate directly to `CancerGalaxy` for repeat viewing, without calling `GameplayService.UseCancerGalaxy()` again. `UseCancerGalaxy()` correctly returns `AlreadyUsed` after the first purchase; `GetEvidenceBoard().GalaxyEvidence` already supplies the unlocked safe data, and `CancerGalaxyController` already renders from that evidence. No core Gameplay change is required.
+- AI Assistant remains a once-per-Case 40 RP action. Its Evidence Board card may show only Prediction, Confidence, and Top 3 Candidates. It must not render `ai.correct`, true class, ANOMALY, an explanation, or the complete eight-class probability distribution.
+- The diagnosis column retains the fixed eight `CancerType` choices. Players may select and submit without purchasing any tool; Submit stays free, including at 0 RP.
+- Pre-submit rendering must continue to use only `PlayerCaseView`, `EvidenceBoardView`, and successful paid-tool views. These do not expose true class, ANOMALY, or `ai.correct`; locked evidence must not be derived from static data or result views.
+
+Compatibility finding: no core-rule or `GameplayService` change is required. The current CaseAnalysis controller/layout will need a later UI-only visual/controller revision because it still renders a separate Initial Clues panel and has no clickable Galaxy evidence-card navigation; that later revision must preserve the service-call boundary above.
+
+### CaseAnalysis semi-static background integration (2026-10-05)
+
+- `bg_caseanalysis.png` is the only full-screen CaseAnalysis background Image. It uses full-stretch anchors, zero offsets, preserved aspect ratio, and disabled raycast.
+- Removed duplicate Unity-rendered paper/corkboard panels, title signs, card backings and decorations, diagnosis labels/icons/card fills, status-bar paper/icons, tool-button art/cost labels, and Submit art. All fixed presentation now comes from the frozen background.
+- Five top status TMP overlays remain bound to the safe `PlayerCaseView`: Shift, Case, Case ID, Remaining RP, and Score. Each overlay renders its short label together with the live value; no sample value is hard-coded.
+- The two Initial Clue cards contain dynamic TMP content only: Gene, HIGH/LOW with directional arrow, and Expression value from the safe view model. The three lower cards retain only the Chinese static placeholders “扫描证据 / 待解锁”, “星图证据 / 待解锁”, and “AI辅助 / 待解锁”; dynamic unlock replacement remains deferred.
+- Gene Scan, Cancer Galaxy, and AI Assistant use transparent Button hit areas aligned over the three background buttons. Their existing Controller listeners and Gameplay calls are unchanged; Unity does not redraw the baked button art or cost text.
+- Diagnosis uses eight transparent Button hit areas in the background's fixed 2-by-4 order (`lung`, `skin`, `cns_brain`, `bowel`, `esophagus_stomach`, `breast`, `bone`, `ovary_fallopian_tube`). A separate small `✓` TMP object supplies lightweight selection feedback without altering the background. Submit is a transparent Button hit area over the baked Submit control; its existing submit event is unchanged.
+- Final 1920x1080 anchors: Tools `(.04,.14)-(.255,.57)`, Evidence Board `(.285,.18)-(.690,.78)`, and Diagnosis `(.710,.11)-(.985,.77)`. Initial clue text overlays are local `(.115,.515)-(.420,.700)` and `(.535,.515)-(.855,.700)` inside Evidence Board. The three lower evidence slots are local x ranges `.030-.315`, `.345-.655`, `.675-.975`, each with y `.045-.390`.
+- Targeted Unity batch rebuild and single scene validation passed: scene opened, 19 formal-font TMP texts, 12 Buttons, all Controller references, no missing script/reference, no duplicate sprite layer, and 0 C# compilation errors. No full Two-Case smoke test was run.
+
+### ResultSummary single-paper refactor (2026-10-05)
+
+- ResultSummary now uses the existing large background paper as its sole visible information surface. The prior foreground dialog-paper layer is transparent and no longer renders a second paper.
+- Removed the character decoration and the ANOMALY/red-X presentation from the scene and controller. The page contains only the result title/verdict, a left diagnosis and score column, a right AI teaching-review column, and the single Next button.
+- The left column renders the player diagnosis, true diagnosis, earned score, current Shift score, and remaining RP. The right column renders only the safe post-submit AI review: Prediction, Confidence, and Top 3 Candidates.
+- Added `CancerTrace/Phase B/Rebuild Result Summary UI` as a narrow editor action for rebuilding only this scene without touching the current CaseAnalysis layout.
+
+## 后续正式开发规则：Scene 是视觉真值（2026-10-07 起）
+
+项目已从自动搭建 Scene 骨架阶段进入正式 UI 定稿与增量开发阶段。以下规则覆盖后续日常开发方式；现有历史记录继续保留作为实现背景。
+
+### 统一工作流
+
+- `MainMenu.unity`、`CaseAnalysis.unity`、`CancerGalaxy.unity`、`ResultSummary.unity` 当前保存内容是正式视觉真值。
+- 后续默认在现有 Scene 中原地、局部、增量修改。人工保存的 RectTransform、Anchor、Pivot、Size、Font Size、Line Spacing、Alpha、Image/Button 尺寸与位置等参数优先于 Builder 中的旧参数。
+- 禁止默认运行 Scene Builder、Rebuild Scene、全量重新生成 UI，或以旧 Builder 参数覆盖当前 Scene。不得因新增单个功能而重建整个 Scene。
+- 小型视觉微调由用户在 Unity Editor 中完成；Codex主要负责数据绑定、Controller/View Model、状态显隐、按钮事件、Scene 跳转、Tutorial 状态机、Shift/Save/Runtime 接入、新功能对象、复杂局部布局与 Bug 修复。
+- 中大型 UI 修改也必须限定在指定区域，不得顺带重建其他区域或整个 Scene。
+- Builder 保留用于新 Scene 初始骨架、灾难恢复、Scene 损坏恢复，或用户明确要求的全量重构。新 Scene 骨架完成后，同样切换为 Scene 视觉真值。
+- 如果确实必须运行现有 Scene Builder，Codex必须先停止修改，说明原因、目标 Scene、会覆盖的 GameObject，以及 RectTransform、Alpha、Font、Image 等参数影响，并等待用户明确确认。只有用户明确写出“允许重建Scene”后才能执行。
+
+### 当前正式 Scene 状态
+
+#### MainMenu
+
+- 已有正式视觉基础。
+- Continue 功能与 Tutorial 入口功能仍可增量开发。
+- 不得为了新增功能整体重建 MainMenu。
+
+#### CaseAnalysis
+
+- Initial Clues、Gene Scan、Cancer Galaxy、AI Assistant、Diagnosis、Submit、Evidence Board 和 Galaxy 免费重复查看等核心功能基本完成。
+- 正式背景为 `Assets/Art/Background/bg_caseanalysis.png`；当前 Scene 已包含大量人工与正式布局参数。
+- 后续允许最终人工视觉微调；Tutorial 可在现有 Scene 上新增 Guide Layer / Overlay。
+- 不允许整体 Rebuild。
+
+#### CancerGalaxy
+
+- 核心数据逻辑已存在。
+- 标题、Current Case Node、Remaining RP、五条 nearbyReferences、字号、对齐与行距仍需单独收口。
+- 后续必须基于当前 `CancerGalaxy.unity` 原地修改，不得全量重建。
+
+#### ResultSummary
+
+- 当前已使用 `ui_title_result_summary.png`、`ui_result_correct.png`、`ui_result_wrong.png`，并已在 Unity Editor 中完成人工视觉调整。
+- 当前 `ResultSummary.unity` 布局是人工视觉真值。默认不得运行 ResultSummary Builder、重建 Scene，或覆盖人工 RectTransform、字号、透明度及素材尺寸/位置。
+- 后续可增量修改 `ResultSummaryController`、数据绑定、ANOMALY 提示、Next 流程、ShiftSummary 接入和 Tutorial 复用，但必须保留现有 Scene 视觉参数。
+
+### 尚未完成
+
+1. CancerGalaxy UI 收口。
+2. ShiftSummary：One Shift = 10 Cases；第 10 个 Case 完成后进入；当前尚未正式实现或定稿。
+3. Tutorial：MainMenu 已有入口，但尚未正式实现；教程免费且不计入正式 Shift。后续优先复用 CaseAnalysis、CancerGalaxy、ResultSummary，并通过 Guide Layer / Overlay 教学，不为 Tutorial 重建正式 Scene。
+4. 全局最终视觉 Polish：在功能与正式流程稳定后统一进行人工微调。
+
+### 推荐后续顺序
+
+1. 逐个确定现有正式 Scene 视觉。
+2. 修复明显的中大型 UI 问题，小视觉问题由用户人工调整。
+3. 完成 CancerGalaxy UI。
+4. 完成 ShiftSummary。
+5. 完成 Tutorial。
+6. 执行完整正式流程测试。
+7. 最终全局视觉 Polish 与 Build QA。
+
+后续所有 Codex 任务默认遵守：**现有正式 Scene 原地增量开发；禁止完整重建；人工保存的视觉参数优先于旧 Builder 参数。**
+
 The sections below are the retained Phase A audit baseline from 2026-10-04. They are historical; the Phase B completion record above is the current integration state.
 
 ## 1. Snapshot
