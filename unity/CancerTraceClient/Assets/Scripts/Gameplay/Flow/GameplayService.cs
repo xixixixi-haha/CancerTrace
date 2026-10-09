@@ -137,7 +137,7 @@ namespace CancerTrace.Gameplay.Flow
             GameCaseData gameCase = GetCurrentStaticCase();
             return GameplayActionResult<GeneScanView>.Succeeded(
                 new GeneScanView(
-                    BuildClues(gameCase.GeneScanClues),
+                    GameplayViewFactory.BuildClues(gameCase.GeneScanClues),
                     runtime.CurrentState.RemainingRp));
         }
 
@@ -195,7 +195,7 @@ namespace CancerTrace.Gameplay.Flow
             GameCaseData gameCase = GetCurrentStaticCase();
             CurrentCaseRuntimeState current = runtime.CurrentState.CurrentCaseState;
             IList<ClueView> geneScanClues = current.GeneScanUsed
-                ? BuildClues(gameCase.GeneScanClues)
+                ? GameplayViewFactory.BuildClues(gameCase.GeneScanClues)
                 : new List<ClueView>();
             CancerGalaxyView galaxyEvidence = current.CancerGalaxyUsed
                 ? BuildCancerGalaxyView(gameCase)
@@ -206,7 +206,7 @@ namespace CancerTrace.Gameplay.Flow
 
             return GameplayActionResult<EvidenceBoardView>.Succeeded(
                 new EvidenceBoardView(
-                    BuildClues(gameCase.InitialClues),
+                    GameplayViewFactory.BuildClues(gameCase.InitialClues),
                     geneScanClues,
                     galaxyEvidence,
                     aiEvidence));
@@ -412,7 +412,7 @@ namespace CancerTrace.Gameplay.Flow
                 state.SelectedCaseIds.Count,
                 state.RemainingRp,
                 state.CurrentScore,
-                BuildClues(gameCase.InitialClues),
+                GameplayViewFactory.BuildClues(gameCase.InitialClues),
                 new ToolAvailabilityView(
                     config.GeneScanCost,
                     current.GeneScanUsed,
@@ -458,86 +458,15 @@ namespace CancerTrace.Gameplay.Flow
 
         private CancerGalaxyView BuildCancerGalaxyView(GameCaseData gameCase)
         {
-            List<GalaxyReferenceNodeView> referenceNodes = new List<GalaxyReferenceNodeView>();
-            IReadOnlyList<GalaxyNodeData> allNodes = galaxy.GetAll();
-            for (int index = 0; index < allNodes.Count; index++)
-            {
-                GalaxyNodeData node = allNodes[index];
-                if (!string.Equals(node.NodeType, "REFERENCE", StringComparison.Ordinal)) continue;
-                referenceNodes.Add(new GalaxyReferenceNodeView(
-                    node.CellLineName,
-                    node.ReferenceClassId,
-                    node.ReferenceClassLabelEn,
-                    node.ReferenceClassLabelZh,
-                    node.UmapX,
-                    node.UmapY,
-                    node.DisplayX,
-                    node.DisplayY));
-            }
-
-            List<NearbyReferenceView> nearby = new List<NearbyReferenceView>();
-            for (int index = 0; index < gameCase.Galaxy.NearbyReferences.Length; index++)
-            {
-                NearbyReferenceData item = gameCase.Galaxy.NearbyReferences[index];
-                nearby.Add(new NearbyReferenceView(
-                    item.CellLineName,
-                    item.ClassId,
-                    item.LabelEn,
-                    item.LabelZh,
-                    item.Distance));
-            }
-
-            return new CancerGalaxyView(
-                gameCase.Galaxy.UmapX,
-                gameCase.Galaxy.UmapY,
-                gameCase.Galaxy.DisplayX,
-                gameCase.Galaxy.DisplayY,
-                referenceNodes,
-                nearby,
+            return GameplayViewFactory.BuildCancerGalaxy(
+                gameCase,
+                galaxy,
                 runtime.CurrentState.RemainingRp);
         }
 
         private AiAssistantView BuildAiAssistantView(GameCaseData gameCase)
         {
-            List<AiCandidateView> candidates = new List<AiCandidateView>();
-            for (int index = 0; index < gameCase.Ai.Top3.Length; index++)
-            {
-                AiCandidateData candidate = gameCase.Ai.Top3[index];
-                candidates.Add(new AiCandidateView(
-                    candidate.ClassId,
-                    candidate.LabelEn,
-                    candidate.LabelZh,
-                    candidate.Probability));
-            }
-
-            return new AiAssistantView(
-                gameCase.Ai.PredictedClassId,
-                gameCase.Ai.PredictedClassLabelEn,
-                gameCase.Ai.PredictedClassLabelZh,
-                gameCase.Ai.Confidence,
-                candidates,
-                runtime.CurrentState.RemainingRp);
-        }
-
-        private static List<ClueView> BuildClues(ClueData[] source)
-        {
-            List<ClueView> clues = new List<ClueView>(source.Length);
-            for (int clueIndex = 0; clueIndex < source.Length; clueIndex++)
-            {
-                ClueData clue = source[clueIndex];
-                List<ClueSupportView> support = new List<ClueSupportView>(clue.Support.Length);
-                for (int supportIndex = 0; supportIndex < clue.Support.Length; supportIndex++)
-                {
-                    ClueSupportData item = clue.Support[supportIndex];
-                    support.Add(new ClueSupportView(
-                        item.ClassId,
-                        item.LabelEn,
-                        item.LabelZh,
-                        item.Strength));
-                }
-                clues.Add(new ClueView(clue.Gene, clue.ExpressionValue, clue.State, support));
-            }
-            return clues;
+            return GameplayViewFactory.BuildAiAssistant(gameCase, runtime.CurrentState.RemainingRp);
         }
 
         private IReadOnlyList<CancerTypeOptionView> BuildDiagnosisOptions()

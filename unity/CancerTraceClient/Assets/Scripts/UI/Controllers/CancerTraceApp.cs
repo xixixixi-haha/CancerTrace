@@ -4,6 +4,7 @@ using CancerTrace.Data;
 using CancerTrace.Data.Save;
 using CancerTrace.Gameplay.Flow;
 using CancerTrace.Gameplay.Runtime;
+using CancerTrace.Gameplay.Tutorial;
 using UnityEngine;
 
 namespace CancerTrace.UI.Controllers
@@ -25,7 +26,10 @@ namespace CancerTrace.UI.Controllers
         public bool IsLoading { get; private set; }
         public string ErrorMessage { get; private set; }
         public GameplayService Gameplay { get; private set; }
+        public TutorialService Tutorial { get; private set; }
+        public TutorialProgressRepository TutorialProgress { get; private set; }
         public string SavePath { get; private set; }
+        public string TutorialProgressPath { get; private set; }
 
         public static CancerTraceApp EnsureInstance()
         {
@@ -73,10 +77,37 @@ namespace CancerTrace.UI.Controllers
 
             try
             {
+                string savePathOverride = GetCommandLineValue("-cancerTraceSavePath");
                 SaveDataRepository saves = new SaveDataRepository(
                     loadResult.Data.Cases,
                     loadResult.Data.Config,
-                    GetCommandLineValue("-cancerTraceSavePath"));
+                    savePathOverride);
+                TutorialProgressRepository tutorialProgress = new TutorialProgressRepository(
+                    GetCommandLineValue("-cancerTraceTutorialProgressPath"));
+                string progressError;
+                if (!tutorialProgress.TryLoad(out progressError))
+                {
+                    throw new InvalidOperationException(progressError);
+                }
+
+                if (!tutorialProgress.TutorialCompleted && saves.HasSave())
+                {
+                    SaveLoadResult legacySave = saves.Load();
+                    if (legacySave.Success && legacySave.State.TutorialCompleted)
+                    {
+                        if (!tutorialProgress.TryMarkCompleted(out progressError))
+                        {
+                            throw new InvalidOperationException(
+                                "Could not migrate Tutorial completion from the formal save. " + progressError);
+                        }
+                    }
+                    else if (!legacySave.Success)
+                    {
+                        Debug.LogWarning(
+                            "Tutorial progress migration skipped because the formal save could not be read.\n" +
+                            legacySave.ErrorMessage);
+                    }
+                }
                 GameRuntimeService runtime = new GameRuntimeService(
                     loadResult.Data.Cases,
                     loadResult.Data.Config,
@@ -87,7 +118,14 @@ namespace CancerTrace.UI.Controllers
                     loadResult.Data.Galaxy,
                     loadResult.Data.ClassProfiles,
                     loadResult.Data.Config);
+                Tutorial = new TutorialService(
+                    loadResult.Data.Cases,
+                    loadResult.Data.Galaxy,
+                    loadResult.Data.Config,
+                    tutorialProgress);
+                TutorialProgress = tutorialProgress;
                 SavePath = saves.SavePath;
+                TutorialProgressPath = tutorialProgress.ProgressPath;
                 IsReady = true;
             }
             catch (Exception exception)

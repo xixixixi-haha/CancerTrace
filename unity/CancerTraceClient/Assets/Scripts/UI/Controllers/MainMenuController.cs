@@ -20,6 +20,7 @@ namespace CancerTrace.UI.Controllers
         {
             app = CancerTraceApp.EnsureInstance();
             newShiftButton.onClick.AddListener(StartNewShift);
+            tutorialButton.onClick.AddListener(StartTutorial);
             newShiftButton.interactable = false;
             continueButton.interactable = false;
             tutorialButton.interactable = false;
@@ -32,6 +33,7 @@ namespace CancerTrace.UI.Controllers
             if (app.IsReady)
             {
                 newShiftButton.interactable = true;
+                tutorialButton.interactable = true;
                 if (!readyShown)
                 {
                     statusText.text = "档案已就绪。开始今天的调查吧！";
@@ -41,6 +43,7 @@ namespace CancerTrace.UI.Controllers
             else if (!string.IsNullOrEmpty(app.ErrorMessage))
             {
                 newShiftButton.interactable = false;
+                tutorialButton.interactable = false;
                 statusText.text = "数据加载失败：" + app.ErrorMessage;
             }
         }
@@ -48,11 +51,26 @@ namespace CancerTrace.UI.Controllers
         private void StartNewShift()
         {
             newShiftButton.interactable = false;
+            app.Tutorial.EndTutorial();
             GameplayActionResult<PlayerCaseView> result = app.Gameplay.StartNewShift();
             if (!result.Success)
             {
                 statusText.text = "无法开始调查：" + result.Message;
                 newShiftButton.interactable = true;
+                return;
+            }
+
+            SceneManager.LoadScene("CaseAnalysis");
+        }
+
+        private void StartTutorial()
+        {
+            tutorialButton.interactable = false;
+            string errorMessage;
+            if (!app.Tutorial.TryStartTutorial(out errorMessage))
+            {
+                statusText.text = "无法开始教程：" + errorMessage;
+                tutorialButton.interactable = true;
                 return;
             }
 

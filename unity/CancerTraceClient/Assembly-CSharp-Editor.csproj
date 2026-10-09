@@ -58,8 +58,14 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\ResultSummaryUiValidation.cs" />
+    <Compile Include="Assets\Editor\TutorialGuideInstaller.cs" />
+    <Compile Include="Assets\Editor\MainMenuVisualBuilder.cs" />
+    <Compile Include="Assets\Editor\ShiftSummarySceneRebuilder.cs" />
+    <Compile Include="Assets\Editor\MainMenuVisualValidation.cs" />
     <Compile Include="Assets\Editor\PhaseB5CameraValidation.cs" />
     <Compile Include="Assets\Editor\PhaseBSceneBuilder.cs" />
+    <Compile Include="Assets\Editor\CaseAnalysisVisualBuilder.cs" />
     <Compile Include="Assets\Editor\PhaseBPlayModeSmokeLauncher.cs" />
     <Compile Include="Assets\Editor\SourceHanSansTmpFontSetup.cs" />
     <Compile Include="Assets\Editor\PhaseBIntegrationSmokeTest.cs" />
