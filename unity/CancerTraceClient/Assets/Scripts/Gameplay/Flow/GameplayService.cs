@@ -44,6 +44,14 @@ namespace CancerTrace.Gameplay.Flow
             return diagnosisOptions;
         }
 
+        /// <summary>
+        /// Persists the current formal runtime state without exposing the runtime service to UI code.
+        /// </summary>
+        public SaveOperationResult SaveNow()
+        {
+            return runtime.SaveNow();
+        }
+
         public GameplayActionResult<PlayerCaseView> StartNewShift()
         {
             if (runtime.CurrentState != null)
