@@ -9,6 +9,13 @@ using UnityEngine;
 
 namespace CancerTrace.UI.Controllers
 {
+    public enum FormalSaveStatus
+    {
+        NoSave,
+        ValidSave,
+        InvalidSave
+    }
+
     /// <summary>
     /// Owns the single runtime/service graph used by all formal scenes.
     /// Static data remains read-only; mutable state is owned by GameRuntimeService.
@@ -16,6 +23,7 @@ namespace CancerTrace.UI.Controllers
     public sealed class CancerTraceApp : MonoBehaviour
     {
         private static CancerTraceApp instance;
+        private SaveDataRepository saves;
 
         public static CancerTraceApp Instance
         {
@@ -30,6 +38,34 @@ namespace CancerTrace.UI.Controllers
         public TutorialProgressRepository TutorialProgress { get; private set; }
         public string SavePath { get; private set; }
         public string TutorialProgressPath { get; private set; }
+
+        public FormalSaveStatus GetFormalSaveStatus(out string errorMessage)
+        {
+            if (!IsReady || saves == null)
+            {
+                errorMessage = "CancerTrace application services are not ready.";
+                return FormalSaveStatus.InvalidSave;
+            }
+
+            if (!saves.HasSave())
+            {
+                errorMessage = null;
+                return FormalSaveStatus.NoSave;
+            }
+
+            SaveLoadResult load = saves.Load();
+            if (load.Success)
+            {
+                errorMessage = null;
+                return FormalSaveStatus.ValidSave;
+            }
+
+            errorMessage = load.ErrorMessage;
+            Debug.LogWarning(
+                "Formal save exists but is invalid. Start and Continue remain disabled to protect it.\n" +
+                errorMessage);
+            return FormalSaveStatus.InvalidSave;
+        }
 
         public static CancerTraceApp EnsureInstance()
         {
@@ -78,7 +114,7 @@ namespace CancerTrace.UI.Controllers
             try
             {
                 string savePathOverride = GetCommandLineValue("-cancerTraceSavePath");
-                SaveDataRepository saves = new SaveDataRepository(
+                saves = new SaveDataRepository(
                     loadResult.Data.Cases,
                     loadResult.Data.Config,
                     savePathOverride);
