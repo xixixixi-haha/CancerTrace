@@ -32,13 +32,17 @@ namespace CancerTrace.UI.GameMenu
         [SerializeField] private Button returnMainMenuButton;
         [SerializeField] private Button quitButton;
 
-        [Header("SFX preferences")]
+        [Header("BGM preferences")]
         [SerializeField] private Slider volumeSlider;
         [SerializeField] private TMP_Text volumePercentText;
         [SerializeField] private Button sfxCheckbox;
         [SerializeField] private Image sfxCheckboxImage;
         [SerializeField] private Sprite sfxCheckedSprite;
         [SerializeField] private Sprite sfxUncheckedSprite;
+
+        [Header("Background music")]
+        [SerializeField] private AudioSource bgmAudioSource;
+        [SerializeField] private AudioListener bgmAudioListener;
 
         [Header("Feedback")]
         [SerializeField] private TMP_Text errorText;
@@ -63,6 +67,14 @@ namespace CancerTrace.UI.GameMenu
             CloseMenu();
             RefreshSceneVisibility(SceneManager.GetActiveScene().name);
             SceneManager.activeSceneChanged += HandleActiveSceneChanged;
+            SceneManager.sceneLoaded += HandleSceneLoaded;
+            SceneManager.sceneUnloaded += HandleSceneUnloaded;
+        }
+
+        private void Start()
+        {
+            RefreshBgmAudioListener();
+            StartBgm();
         }
 
         private void OnDestroy()
@@ -70,6 +82,8 @@ namespace CancerTrace.UI.GameMenu
             if (instance != this) return;
 
             SceneManager.activeSceneChanged -= HandleActiveSceneChanged;
+            SceneManager.sceneLoaded -= HandleSceneLoaded;
+            SceneManager.sceneUnloaded -= HandleSceneUnloaded;
             instance = null;
         }
 
@@ -107,14 +121,24 @@ namespace CancerTrace.UI.GameMenu
             resumeButton.onClick.AddListener(CloseMenu);
             returnMainMenuButton.onClick.AddListener(ReturnToMainMenu);
             quitButton.onClick.AddListener(QuitGame);
-            volumeSlider.onValueChanged.AddListener(SetSfxVolume);
-            sfxCheckbox.onClick.AddListener(ToggleSfx);
+            volumeSlider.onValueChanged.AddListener(SetBgmVolume);
+            sfxCheckbox.onClick.AddListener(ToggleBgm);
         }
 
         private void HandleActiveSceneChanged(Scene previous, Scene next)
         {
             CloseMenu();
             RefreshSceneVisibility(next.name);
+        }
+
+        private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            RefreshBgmAudioListener();
+        }
+
+        private void HandleSceneUnloaded(Scene scene)
+        {
+            RefreshBgmAudioListener();
         }
 
         private void RefreshSceneVisibility(string sceneName)
@@ -124,26 +148,63 @@ namespace CancerTrace.UI.GameMenu
 
         private void RefreshPreferenceControls()
         {
-            float volume = GameMenuPreferences.SfxVolume;
+            float volume = GameMenuPreferences.BgmVolume;
             volumeSlider.SetValueWithoutNotify(volume);
             volumePercentText.text = Mathf.RoundToInt(volume * 100f) + "%";
-            sfxCheckboxImage.sprite = GameMenuPreferences.SfxEnabled
+            sfxCheckboxImage.sprite = GameMenuPreferences.BgmEnabled
                 ? sfxCheckedSprite
                 : sfxUncheckedSprite;
         }
 
-        private void SetSfxVolume(float value)
+        private void SetBgmVolume(float value)
         {
-            GameMenuPreferences.SfxVolume = value;
-            volumePercentText.text = Mathf.RoundToInt(GameMenuPreferences.SfxVolume * 100f) + "%";
+            GameMenuPreferences.BgmVolume = value;
+            volumePercentText.text = Mathf.RoundToInt(GameMenuPreferences.BgmVolume * 100f) + "%";
+            if (bgmAudioSource != null) bgmAudioSource.volume = GameMenuPreferences.BgmVolume;
         }
 
-        private void ToggleSfx()
+        private void ToggleBgm()
         {
-            GameMenuPreferences.SfxEnabled = !GameMenuPreferences.SfxEnabled;
-            sfxCheckboxImage.sprite = GameMenuPreferences.SfxEnabled
+            GameMenuPreferences.BgmEnabled = !GameMenuPreferences.BgmEnabled;
+            sfxCheckboxImage.sprite = GameMenuPreferences.BgmEnabled
                 ? sfxCheckedSprite
                 : sfxUncheckedSprite;
+            if (bgmAudioSource != null) bgmAudioSource.mute = !GameMenuPreferences.BgmEnabled;
+        }
+
+        private void StartBgm()
+        {
+            if (bgmAudioSource == null || bgmAudioSource.clip == null)
+            {
+                Debug.LogError("Game menu BGM AudioSource or AudioClip is missing.", this);
+                return;
+            }
+
+            bgmAudioSource.playOnAwake = false;
+            bgmAudioSource.loop = true;
+            bgmAudioSource.spatialBlend = 0f;
+            bgmAudioSource.volume = GameMenuPreferences.BgmVolume;
+            bgmAudioSource.mute = !GameMenuPreferences.BgmEnabled;
+            if (!bgmAudioSource.isPlaying) bgmAudioSource.Play();
+        }
+
+        private void RefreshBgmAudioListener()
+        {
+            if (bgmAudioListener == null) return;
+
+            bool externalListenerEnabled = false;
+            AudioListener[] listeners = FindObjectsOfType<AudioListener>();
+            for (int index = 0; index < listeners.Length; index++)
+            {
+                AudioListener listener = listeners[index];
+                if (listener != bgmAudioListener && listener.enabled)
+                {
+                    externalListenerEnabled = true;
+                    break;
+                }
+            }
+
+            bgmAudioListener.enabled = !externalListenerEnabled;
         }
 
         private void ReturnToMainMenu()

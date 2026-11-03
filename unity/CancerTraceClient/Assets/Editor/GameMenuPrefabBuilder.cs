@@ -15,6 +15,7 @@ namespace CancerTrace.EditorTools
     {
         private const string PrefabFolder = "Assets/Resources/UI";
         private const string PrefabPath = PrefabFolder + "/GameMenuOverlay.prefab";
+        private const string BgmPath = "Assets/Audio/BGM/forget_me_not_in_f_major_looped.ogg";
         private const string FontPath = "Assets/Fonts/TMP/SourceHanSansSC-Regular SDF.asset";
         private const string GearPath = "Assets/Art/Icons/Common/icon_settings_gear.png";
         private const string VolumeIconPath = "Assets/Art/Icons/Common/icon_volume.png";
@@ -49,11 +50,20 @@ namespace CancerTrace.EditorTools
             Sprite thumbSprite = LoadRequired<Sprite>(SliderThumbPath);
             Sprite checkedSprite = LoadRequired<Sprite>(CheckedPath);
             Sprite uncheckedSprite = LoadRequired<Sprite>(UncheckedPath);
+            AudioClip bgmClip = LoadRequired<AudioClip>(BgmPath);
 
             GameObject host = new GameObject("GameMenuHost");
             try
             {
                 GameMenuController controller = host.AddComponent<GameMenuController>();
+                AudioSource bgmAudioSource = host.AddComponent<AudioSource>();
+                bgmAudioSource.clip = bgmClip;
+                bgmAudioSource.playOnAwake = false;
+                bgmAudioSource.loop = true;
+                bgmAudioSource.spatialBlend = 0f;
+                bgmAudioSource.volume = 0.15f;
+                AudioListener bgmAudioListener = host.AddComponent<AudioListener>();
+                bgmAudioListener.enabled = false;
 
                 RectTransform canvasRect = CreateRect("GameMenuCanvas", host.transform);
                 Stretch(canvasRect);
@@ -106,12 +116,12 @@ namespace CancerTrace.EditorTools
                 volumeIcon.raycastTarget = false;
 
                 TMP_Text volumeLabel = CreateText(
-                    "VolumeLabel", panel.rectTransform, font, "音效音量", 32f,
+                    "VolumeLabel", panel.rectTransform, font, "音乐音量", 32f,
                     TextAlignmentOptions.MidlineLeft, TextBrown);
                 SetCentered(volumeLabel.rectTransform, new Vector2(220f, 58f), new Vector2(-89f, -233.5f));
 
                 TMP_Text percentText = CreateText(
-                    "VolumePercentText", panel.rectTransform, font, "70%", 32f,
+                    "VolumePercentText", panel.rectTransform, font, "15%", 32f,
                     TextAlignmentOptions.MidlineRight, TextBrown);
                 SetCentered(percentText.rectTransform, new Vector2(110f, 58f), new Vector2(223f, -233.5f));
 
@@ -123,7 +133,7 @@ namespace CancerTrace.EditorTools
                 Image checkboxImage = checkbox.GetComponent<Image>();
 
                 TMP_Text checkboxLabel = CreateText(
-                    "SfxCheckboxLabel", panel.rectTransform, font, "开启音效", 30f,
+                    "SfxCheckboxLabel", panel.rectTransform, font, "开启音乐", 30f,
                     TextAlignmentOptions.MidlineLeft, TextBrown);
                 SetCentered(checkboxLabel.rectTransform, new Vector2(270f, 58f), new Vector2(93.5f, -336.5f));
 
@@ -148,6 +158,8 @@ namespace CancerTrace.EditorTools
                 SetObject(serialized, "sfxCheckboxImage", checkboxImage);
                 SetObject(serialized, "sfxCheckedSprite", checkedSprite);
                 SetObject(serialized, "sfxUncheckedSprite", uncheckedSprite);
+                SetObject(serialized, "bgmAudioSource", bgmAudioSource);
+                SetObject(serialized, "bgmAudioListener", bgmAudioListener);
                 SetObject(serialized, "errorText", errorText);
                 serialized.ApplyModifiedPropertiesWithoutUndo();
 
@@ -175,11 +187,25 @@ namespace CancerTrace.EditorTools
                 // renames the one instantiated object to GameMenuHost before it is used.
                 Require(root.name == "GameMenuOverlay", "Prefab root must match its asset name.");
                 Require(root.GetComponent<GameMenuController>() != null, "GameMenuController is missing.");
+                Require(root.activeSelf, "Prefab root must remain active.");
                 Require(root.GetComponentInChildren<EventSystem>(true) == null, "Prefab must not contain an EventSystem.");
+
+                AudioSource bgmAudioSource = root.GetComponent<AudioSource>();
+                AudioListener bgmAudioListener = root.GetComponent<AudioListener>();
+                Require(bgmAudioSource != null && bgmAudioSource.clip == LoadRequired<AudioClip>(BgmPath),
+                    "BGM AudioSource or AudioClip reference is invalid.");
+                Require(bgmAudioSource.loop && !bgmAudioSource.playOnAwake &&
+                        Mathf.Approximately(bgmAudioSource.spatialBlend, 0f) &&
+                        Mathf.Approximately(bgmAudioSource.volume, 0.15f),
+                    "BGM AudioSource settings are invalid.");
+                Require(bgmAudioListener != null && !bgmAudioListener.enabled,
+                    "Runtime-managed BGM AudioListener is invalid.");
 
                 Transform canvasTransform = RequirePath(root.transform, "GameMenuCanvas");
                 Canvas canvas = canvasTransform.GetComponent<Canvas>();
                 CanvasScaler scaler = canvasTransform.GetComponent<CanvasScaler>();
+                Require(canvasTransform.localScale == Vector3.one,
+                    "GameMenuCanvas local scale must remain (1,1,1).");
                 Require(canvas != null && canvas.renderMode == RenderMode.ScreenSpaceOverlay,
                     "GameMenuCanvas must be Screen Space Overlay.");
                 Require(canvas.sortingOrder == 30000,
@@ -213,11 +239,18 @@ namespace CancerTrace.EditorTools
 
                 Slider slider = panel.Find("VolumeSlider").GetComponent<Slider>();
                 Require(slider != null && Mathf.Approximately(slider.minValue, 0f) &&
-                        Mathf.Approximately(slider.maxValue, 1f), "VolumeSlider range must be 0..1.");
+                        Mathf.Approximately(slider.maxValue, 1f) && Mathf.Approximately(slider.value, 0.15f),
+                    "VolumeSlider range must be 0..1 and its default value must be 0.15.");
                 Require(slider.handleRect.GetComponent<Image>().sprite == LoadRequired<Sprite>(SliderThumbPath),
                     "VolumeSlider handle Sprite is invalid.");
                 Require(panel.Find("SfxCheckbox").GetComponent<Image>().sprite == LoadRequired<Sprite>(CheckedPath),
                     "SfxCheckbox initial Sprite is invalid.");
+                Require(panel.Find("VolumeLabel").GetComponent<TMP_Text>().text == "音乐音量",
+                    "VolumeLabel text is invalid.");
+                Require(panel.Find("VolumePercentText").GetComponent<TMP_Text>().text == "15%",
+                    "VolumePercentText default is invalid.");
+                Require(panel.Find("SfxCheckboxLabel").GetComponent<TMP_Text>().text == "开启音乐",
+                    "SfxCheckboxLabel text is invalid.");
 
                 TMP_FontAsset font = LoadRequired<TMP_FontAsset>(FontPath);
                 TMP_Text[] texts = root.GetComponentsInChildren<TMP_Text>(true);
@@ -274,7 +307,7 @@ namespace CancerTrace.EditorTools
             slider.minValue = 0f;
             slider.maxValue = 1f;
             slider.wholeNumbers = false;
-            slider.value = 0.7f;
+            slider.value = 0.15f;
             return slider;
         }
 

@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\UI\Controllers\CaseAnalysisController.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Runtime\TutorialSessionState.cs" />
     <Compile Include="Assets\Scripts\Debug\RuntimeSaveSmokeTest.cs" />
+    <Compile Include="Assets\Scripts\UI\GameMenu\GameMenuPreferences.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayActionResult.cs" />
     <Compile Include="Assets\Scripts\Data\Save\TutorialProgressRepository.cs" />
     <Compile Include="Assets\Scripts\UI\Tutorial\TutorialGuideController.cs" />
@@ -83,12 +84,14 @@
     <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayViewFactory.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Flow\TutorialService.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Flow\GameplayService.cs" />
+    <Compile Include="Assets\Scripts\UI\GameMenu\GameMenuController.cs" />
     <Compile Include="Assets\Scripts\Data\GameDataLoader.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Runtime\GameRuntimeService.cs" />
     <Compile Include="Assets\Scripts\UI\Controllers\ShiftSummaryController.cs" />
     <Compile Include="Assets\Scripts\Data\Save\SaveDataRepository.cs" />
     <Compile Include="Assets\Scripts\Data\Save\TutorialProgressDataV1.cs" />
     <Compile Include="Assets\Scripts\UI\Controllers\ResultSummaryController.cs" />
+    <Compile Include="Assets\Scripts\UI\GameMenu\GameMenuBootstrap.cs" />
     <Compile Include="Assets\Scripts\Data\Validation\DataValidator.cs" />
   </ItemGroup>
   <ItemGroup>
