@@ -3,40 +3,40 @@ using UnityEngine;
 namespace CancerTrace.UI.GameMenu
 {
     /// <summary>
-    /// Application-level SFX preferences. These values intentionally stay outside formal and Tutorial saves.
+    /// Application-level BGM preferences. These values intentionally stay outside formal and Tutorial saves.
     /// </summary>
     public static class GameMenuPreferences
     {
-        private const string SfxEnabledKey = "cancertrace.settings.sfx_enabled";
-        private const string SfxVolumeKey = "cancertrace.settings.sfx_volume";
-        private const float DefaultSfxVolume = 0.7f;
+        private const string BgmEnabledKey = "cancertrace.settings.bgm_enabled";
+        private const string BgmVolumeKey = "cancertrace.settings.bgm_volume";
+        private const float DefaultBgmVolume = 0.15f;
 
-        public static bool SfxEnabled
+        public static bool BgmEnabled
         {
-            get { return PlayerPrefs.GetInt(SfxEnabledKey, 1) != 0; }
+            get { return PlayerPrefs.GetInt(BgmEnabledKey, 1) != 0; }
             set
             {
-                PlayerPrefs.SetInt(SfxEnabledKey, value ? 1 : 0);
+                PlayerPrefs.SetInt(BgmEnabledKey, value ? 1 : 0);
                 PlayerPrefs.Save();
             }
         }
 
-        public static float SfxVolume
+        public static float BgmVolume
         {
-            get { return Mathf.Clamp01(PlayerPrefs.GetFloat(SfxVolumeKey, DefaultSfxVolume)); }
+            get { return Mathf.Clamp01(PlayerPrefs.GetFloat(BgmVolumeKey, DefaultBgmVolume)); }
             set
             {
-                PlayerPrefs.SetFloat(SfxVolumeKey, Mathf.Clamp01(value));
+                PlayerPrefs.SetFloat(BgmVolumeKey, Mathf.Clamp01(value));
                 PlayerPrefs.Save();
             }
         }
 
         /// <summary>
-        /// The value future SFX playback should use. Disabling SFX does not overwrite the chosen slider value.
+        /// The value BGM playback should use. Muting BGM does not overwrite the chosen slider value.
         /// </summary>
-        public static float EffectiveSfxVolume
+        public static float EffectiveBgmVolume
         {
-            get { return SfxEnabled ? SfxVolume : 0f; }
+            get { return BgmEnabled ? BgmVolume : 0f; }
         }
     }
 }

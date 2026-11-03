@@ -61,7 +61,9 @@
     <Compile Include="Assets\Editor\ResultSummaryUiValidation.cs" />
     <Compile Include="Assets\Editor\TutorialGuideInstaller.cs" />
     <Compile Include="Assets\Editor\MainMenuVisualBuilder.cs" />
+    <Compile Include="Assets\Editor\GameMenuPrefabBuilder.cs" />
     <Compile Include="Assets\Editor\ShiftSummarySceneRebuilder.cs" />
+    <Compile Include="Assets\Editor\GameMenuBgmPrefabUpdater.cs" />
     <Compile Include="Assets\Editor\MainMenuVisualValidation.cs" />
     <Compile Include="Assets\Editor\PhaseB5CameraValidation.cs" />
     <Compile Include="Assets\Editor\PhaseBSceneBuilder.cs" />
