@@ -24,6 +24,7 @@ namespace CancerTrace.UI.Controllers
     {
         private static CancerTraceApp instance;
         private SaveDataRepository saves;
+        private string preservedTutorialProgressPath;
 
         public static CancerTraceApp Instance
         {
@@ -38,6 +39,8 @@ namespace CancerTrace.UI.Controllers
         public TutorialProgressRepository TutorialProgress { get; private set; }
         public string SavePath { get; private set; }
         public string TutorialProgressPath { get; private set; }
+        public bool TutorialProgressRecoveryRequired { get; private set; }
+        public string TutorialProgressRecoveryError { get; private set; }
 
         public FormalSaveStatus GetFormalSaveStatus(out string errorMessage)
         {
@@ -65,6 +68,54 @@ namespace CancerTrace.UI.Controllers
                 "Formal save exists but is invalid. Start and Continue remain disabled to protect it.\n" +
                 errorMessage);
             return FormalSaveStatus.InvalidSave;
+        }
+
+        public CorruptFileRecoveryResult PreserveInvalidFormalSave()
+        {
+            if (!IsReady || saves == null)
+            {
+                return CorruptFileRecoveryResult.Failed(
+                    "CancerTrace application services are not ready.");
+            }
+            return saves.PreserveInvalidSave();
+        }
+
+        public CorruptFileRecoveryResult RecoverTutorialProgress()
+        {
+            if (!IsReady || TutorialProgress == null)
+            {
+                return CorruptFileRecoveryResult.Failed(
+                    "CancerTrace Tutorial services are not ready.");
+            }
+            if (!TutorialProgressRecoveryRequired)
+            {
+                return CorruptFileRecoveryResult.Failed(
+                    "Tutorial progress recovery is not required.");
+            }
+
+            string reloadError;
+            if (TutorialProgress.TryLoad(out reloadError))
+            {
+                // The player may have restored a valid file externally, or an earlier
+                // recovery may already have preserved it before migration failed.
+            }
+            else
+            {
+                CorruptFileRecoveryResult preserve = TutorialProgress.PreserveInvalidProgress();
+                if (!preserve.Success) return preserve;
+                preservedTutorialProgressPath = preserve.PreservedPath;
+            }
+
+            string migrationError;
+            if (!TryMigrateTutorialCompletion(TutorialProgress, out migrationError))
+            {
+                TutorialProgressRecoveryError = migrationError;
+                return CorruptFileRecoveryResult.Failed(migrationError, preservedTutorialProgressPath);
+            }
+
+            TutorialProgressRecoveryRequired = false;
+            TutorialProgressRecoveryError = null;
+            return CorruptFileRecoveryResult.Succeeded(preservedTutorialProgressPath);
         }
 
         public static CancerTraceApp EnsureInstance()
@@ -121,28 +172,22 @@ namespace CancerTrace.UI.Controllers
                 TutorialProgressRepository tutorialProgress = new TutorialProgressRepository(
                     GetCommandLineValue("-cancerTraceTutorialProgressPath"));
                 string progressError;
-                if (!tutorialProgress.TryLoad(out progressError))
+                bool tutorialProgressLoaded = tutorialProgress.TryLoad(out progressError);
+                if (!tutorialProgressLoaded)
                 {
-                    throw new InvalidOperationException(progressError);
+                    TutorialProgressRecoveryRequired = true;
+                    TutorialProgressRecoveryError = progressError;
+                    Debug.LogWarning(
+                        "Tutorial progress is invalid. The original file is unchanged and requires explicit player recovery.\n" +
+                        progressError);
                 }
 
-                if (!tutorialProgress.TutorialCompleted && saves.HasSave())
+                if (tutorialProgressLoaded &&
+                    !TryMigrateTutorialCompletion(tutorialProgress, out progressError))
                 {
-                    SaveLoadResult legacySave = saves.Load();
-                    if (legacySave.Success && legacySave.State.TutorialCompleted)
-                    {
-                        if (!tutorialProgress.TryMarkCompleted(out progressError))
-                        {
-                            throw new InvalidOperationException(
-                                "Could not migrate Tutorial completion from the formal save. " + progressError);
-                        }
-                    }
-                    else if (!legacySave.Success)
-                    {
-                        Debug.LogWarning(
-                            "Tutorial progress migration skipped because the formal save could not be read.\n" +
-                            legacySave.ErrorMessage);
-                    }
+                    TutorialProgressRecoveryRequired = true;
+                    TutorialProgressRecoveryError = progressError;
+                    Debug.LogWarning("Tutorial completion migration needs a retry.\n" + progressError);
                 }
                 GameRuntimeService runtime = new GameRuntimeService(
                     loadResult.Data.Cases,
@@ -171,6 +216,26 @@ namespace CancerTrace.UI.Controllers
             }
 
             IsLoading = false;
+        }
+
+        private bool TryMigrateTutorialCompletion(
+            TutorialProgressRepository tutorialProgress,
+            out string errorMessage)
+        {
+            errorMessage = null;
+            if (tutorialProgress.TutorialCompleted || !saves.HasSave()) return true;
+
+            SaveLoadResult legacySave = saves.Load();
+            if (!legacySave.Success)
+            {
+                Debug.LogWarning(
+                    "Tutorial progress migration skipped because the formal save could not be read.\n" +
+                    legacySave.ErrorMessage);
+                return true;
+            }
+            if (!legacySave.State.TutorialCompleted) return true;
+
+            return tutorialProgress.TryMarkCompleted(out errorMessage);
         }
 
         private static string GetCommandLineValue(string argumentName)

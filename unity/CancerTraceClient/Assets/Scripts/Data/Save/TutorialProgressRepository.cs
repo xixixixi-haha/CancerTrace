@@ -33,9 +33,9 @@ namespace CancerTrace.Data.Save
 
         public bool TryLoad(out string errorMessage)
         {
+            TutorialCompleted = false;
             if (!File.Exists(ProgressPath))
             {
-                TutorialCompleted = false;
                 errorMessage = null;
                 return true;
             }
@@ -69,8 +69,36 @@ namespace CancerTrace.Data.Save
             }
         }
 
+        /// <summary>
+        /// Preserves an unreadable/incompatible Tutorial progress file without overwriting it.
+        /// A valid progress file is never moved. The caller must obtain explicit player
+        /// confirmation before invoking this recovery operation.
+        /// </summary>
+        public CorruptFileRecoveryResult PreserveInvalidProgress()
+        {
+            if (!File.Exists(ProgressPath))
+            {
+                TutorialCompleted = false;
+                return CorruptFileRecoveryResult.Succeeded(null);
+            }
+
+            string loadError;
+            if (TryLoad(out loadError))
+            {
+                return CorruptFileRecoveryResult.Failed(
+                    "The Tutorial progress file is valid and was not moved.");
+            }
+
+            CorruptFileRecoveryResult result =
+                CorruptFilePreserver.Preserve(ProgressPath, "Tutorial progress");
+            if (result.Success) TutorialCompleted = false;
+            return result;
+        }
+
         public bool TryMarkCompleted(out string errorMessage)
         {
+            // A direct Tutorial scene entry must not overwrite unreadable progress.
+            if (!TryLoad(out errorMessage)) return false;
             if (TutorialCompleted)
             {
                 errorMessage = null;
