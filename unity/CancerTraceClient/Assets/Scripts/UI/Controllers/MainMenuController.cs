@@ -23,6 +23,7 @@ namespace CancerTrace.UI.Controllers
 
         private CancerTraceApp app;
         private bool readyShown;
+        private bool transitionPending;
         private GameObject recoveryPanel;
         private TMP_Text recoveryTitleText;
         private TMP_Text recoveryMessageText;
@@ -63,6 +64,7 @@ namespace CancerTrace.UI.Controllers
 
         private void RefreshMainMenuState()
         {
+            transitionPending = false;
             HideRecoveryPanel();
             if (app.TutorialProgressRecoveryRequired)
             {
@@ -89,11 +91,15 @@ namespace CancerTrace.UI.Controllers
             {
                 case FormalSaveStatus.NoSave:
                     SetButtons(true, false, true);
-                    statusText.text = "档案已就绪。开始今天的调查吧！";
+                    statusText.text = app.Tutorial.TutorialCompleted
+                        ? "档案已就绪。开始今天的调查吧！"
+                        : "首次调查前，请先完成教程。点击开始调查进入教程。";
                     return;
                 case FormalSaveStatus.ValidSave:
                     SetButtons(false, true, true);
-                    statusText.text = "检测到可恢复的调查记录，请继续调查。";
+                    statusText.text = app.Tutorial.TutorialCompleted
+                        ? "检测到可恢复的调查记录，请继续调查。"
+                        : "请先完成教程，再继续已有调查。原调查记录将保留。";
                     return;
                 default:
                     SetButtons(false, false, true);
@@ -104,7 +110,12 @@ namespace CancerTrace.UI.Controllers
 
         private void StartNewShift()
         {
-            SetButtons(false, false, false);
+            if (!TryBeginMenuAction()) return;
+            if (!app.Tutorial.TutorialCompleted)
+            {
+                BeginTutorial();
+                return;
+            }
             app.Tutorial.EndTutorial();
 
             GameplayActionResult<PlayerCaseView> current = app.Gameplay.GetCurrentCase();
@@ -149,7 +160,12 @@ namespace CancerTrace.UI.Controllers
 
         private void ContinueInvestigation()
         {
-            SetButtons(false, false, false);
+            if (!TryBeginMenuAction()) return;
+            if (!app.Tutorial.TutorialCompleted)
+            {
+                BeginTutorial();
+                return;
+            }
             app.Tutorial.EndTutorial();
 
             GameplayActionResult<PlayerCaseView> current = app.Gameplay.GetCurrentCase();
@@ -199,12 +215,40 @@ namespace CancerTrace.UI.Controllers
 
         private void StartTutorial()
         {
-            tutorialButton.interactable = false;
+            if (!TryBeginMenuAction()) return;
+            BeginTutorial();
+        }
+
+        private bool TryBeginMenuAction()
+        {
+            if (transitionPending || app == null || !app.IsReady ||
+                (recoveryPanel != null && recoveryPanel.activeSelf)) return false;
+
+            // Recovery always precedes Tutorial gating; an unreadable file is not a new user.
+            if (app.TutorialProgressRecoveryRequired)
+            {
+                RefreshMainMenuState();
+                return false;
+            }
+            string saveError;
+            if (app.GetFormalSaveStatus(out saveError) == FormalSaveStatus.InvalidSave)
+            {
+                ShowRecoveryChoice(RecoveryTarget.FormalSave, saveError);
+                return false;
+            }
+
+            transitionPending = true;
+            SetButtons(false, false, false);
+            return true;
+        }
+
+        private void BeginTutorial()
+        {
             string errorMessage;
             if (!app.Tutorial.TryStartTutorial(out errorMessage))
             {
+                RefreshMainMenuState();
                 statusText.text = "无法开始教程：" + errorMessage;
-                tutorialButton.interactable = true;
                 return;
             }
 
