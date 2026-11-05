@@ -15,9 +15,11 @@ namespace CancerTrace.UI.GameMenu
     {
         private static readonly string[] SupportedScenes =
         {
+            "MainMenu",
             "CaseAnalysis",
             "CancerGalaxy",
-            "ResultSummary"
+            "ResultSummary",
+            "ShiftSummary"
         };
 
         private static GameMenuController instance;
@@ -209,6 +211,14 @@ namespace CancerTrace.UI.GameMenu
 
         private void ReturnToMainMenu()
         {
+            // Already on the menu: dismiss settings without reloading the Scene
+            // or attempting to write an absent/invalid formal save.
+            if (SceneManager.GetActiveScene().name == "MainMenu")
+            {
+                CloseMenu();
+                return;
+            }
+
             CancerTraceApp app = CancerTraceApp.Instance;
             if (!TryPrepareToLeave(app)) return;
 
@@ -229,6 +239,10 @@ namespace CancerTrace.UI.GameMenu
         {
             ClearError();
             SetActionButtonsInteractable(false);
+
+            // MainMenu does not mutate a formal session. In particular, quitting
+            // during damaged-save recovery must never write over that file.
+            if (SceneManager.GetActiveScene().name == "MainMenu") return true;
 
             if (app == null || !app.IsReady)
             {
