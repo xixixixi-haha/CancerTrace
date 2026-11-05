@@ -124,6 +124,28 @@ namespace CancerTrace.Data.Save
             }
         }
 
+        /// <summary>
+        /// Preserves an invalid formal save under a timestamped diagnostic name.
+        /// This method refuses to move a valid save and never overwrites an existing backup.
+        /// It is intended to be called only after an explicit player confirmation.
+        /// </summary>
+        public CorruptFileRecoveryResult PreserveInvalidSave()
+        {
+            if (!HasSave())
+            {
+                return CorruptFileRecoveryResult.Succeeded(null);
+            }
+
+            SaveLoadResult load = Load();
+            if (load.Success)
+            {
+                return CorruptFileRecoveryResult.Failed(
+                    "The formal save is valid and was not moved.");
+            }
+
+            return CorruptFilePreserver.Preserve(SavePath, "formal save");
+        }
+
         public SaveValidationResult ValidateSave(SaveDataV1 saveData)
         {
             SaveValidationResult result = new SaveValidationResult();
@@ -585,6 +607,74 @@ namespace CancerTrace.Data.Save
         private static void DeleteIfPresent(string path)
         {
             if (File.Exists(path)) File.Delete(path);
+        }
+    }
+
+    public sealed class CorruptFileRecoveryResult
+    {
+        private CorruptFileRecoveryResult(bool success, string preservedPath, string errorMessage)
+        {
+            Success = success;
+            PreservedPath = preservedPath;
+            ErrorMessage = errorMessage;
+        }
+
+        public bool Success { get; private set; }
+        public string PreservedPath { get; private set; }
+        public string ErrorMessage { get; private set; }
+
+        internal static CorruptFileRecoveryResult Succeeded(string preservedPath)
+        {
+            return new CorruptFileRecoveryResult(true, preservedPath, null);
+        }
+
+        internal static CorruptFileRecoveryResult Failed(string errorMessage, string preservedPath = null)
+        {
+            return new CorruptFileRecoveryResult(false, preservedPath, errorMessage);
+        }
+    }
+
+    internal static class CorruptFilePreserver
+    {
+        public static CorruptFileRecoveryResult Preserve(string sourcePath, string description)
+        {
+            if (string.IsNullOrWhiteSpace(sourcePath))
+            {
+                return CorruptFileRecoveryResult.Failed(
+                    "Cannot preserve " + description + ": source path is empty.");
+            }
+            if (!File.Exists(sourcePath))
+            {
+                return CorruptFileRecoveryResult.Succeeded(null);
+            }
+
+            try
+            {
+                string preservedPath = BuildUniquePreservedPath(sourcePath);
+                File.Move(sourcePath, preservedPath);
+                return CorruptFileRecoveryResult.Succeeded(preservedPath);
+            }
+            catch (Exception exception)
+            {
+                string error =
+                    "Could not preserve invalid " + description + " at " + sourcePath +
+                    Environment.NewLine + exception;
+                Debug.LogError(error);
+                return CorruptFileRecoveryResult.Failed(error);
+            }
+        }
+
+        private static string BuildUniquePreservedPath(string sourcePath)
+        {
+            string timestamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss_fff");
+            string candidate = sourcePath + ".corrupt-" + timestamp + ".bak";
+            int suffix = 1;
+            while (File.Exists(candidate))
+            {
+                candidate = sourcePath + ".corrupt-" + timestamp + "-" + suffix + ".bak";
+                suffix++;
+            }
+            return candidate;
         }
     }
 
