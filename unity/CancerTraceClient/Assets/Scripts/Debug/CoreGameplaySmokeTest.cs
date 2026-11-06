@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,9 +55,9 @@ namespace CancerTrace.Debugging
 
         private static void ExecuteSmoke(GameDataContext data, bool throwOnFailure)
         {
-            string mainSavePath = Path.Combine(Application.persistentDataPath, MainSmokeSaveFileName);
-            string anomalySavePath = Path.Combine(Application.persistentDataPath, AnomalySmokeSaveFileName);
-            string zeroRpSavePath = Path.Combine(Application.persistentDataPath, ZeroRpSmokeSaveFileName);
+            string mainSavePath = Path.Combine(Path.GetTempPath(), "CancerTraceSmokeTests", MainSmokeSaveFileName);
+            string anomalySavePath = Path.Combine(Path.GetTempPath(), "CancerTraceSmokeTests", AnomalySmokeSaveFileName);
+            string zeroRpSavePath = Path.Combine(Path.GetTempPath(), "CancerTraceSmokeTests", ZeroRpSmokeSaveFileName);
 
             try
             {
@@ -507,3 +508,5 @@ namespace CancerTrace.Debugging
         }
     }
 }
+
+#endif

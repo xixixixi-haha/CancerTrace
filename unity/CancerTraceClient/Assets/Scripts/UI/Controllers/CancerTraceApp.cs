@@ -165,12 +165,17 @@ namespace CancerTrace.UI.Controllers
             try
             {
                 string savePathOverride = GetCommandLineValue("-cancerTraceSavePath");
+                string tutorialPathOverride = GetCommandLineValue("-cancerTraceTutorialProgressPath");
+#if UNITY_EDITOR
+                savePathOverride = UnityEditor.SessionState.GetString("CancerTraceSmoke.SavePath", savePathOverride);
+                tutorialPathOverride = UnityEditor.SessionState.GetString("CancerTraceSmoke.TutorialPath", tutorialPathOverride);
+#endif
                 saves = new SaveDataRepository(
                     loadResult.Data.Cases,
                     loadResult.Data.Config,
                     savePathOverride);
                 TutorialProgressRepository tutorialProgress = new TutorialProgressRepository(
-                    GetCommandLineValue("-cancerTraceTutorialProgressPath"));
+                    tutorialPathOverride);
                 string progressError;
                 bool tutorialProgressLoaded = tutorialProgress.TryLoad(out progressError);
                 if (!tutorialProgressLoaded)

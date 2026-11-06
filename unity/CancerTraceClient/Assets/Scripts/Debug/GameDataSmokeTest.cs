@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using CancerTrace.Data;
 using UnityEngine;
@@ -57,3 +58,5 @@ namespace CancerTrace.Debugging
         }
     }
 }
+
+#endif

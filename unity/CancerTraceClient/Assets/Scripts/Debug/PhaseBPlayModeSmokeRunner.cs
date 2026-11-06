@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections;
 using System.IO;
@@ -61,6 +62,8 @@ namespace CancerTrace.Debugging
 
         private IEnumerator RunFlow()
         {
+            RequireTestPath(GetArgument("-cancerTraceSavePath"));
+            RequireTestPath(GetArgument("-cancerTraceTutorialProgressPath"));
             app = CancerTraceApp.EnsureInstance();
             float deadline = Time.realtimeSinceStartup + 20f;
             while (!app.IsReady && string.IsNullOrEmpty(app.ErrorMessage) &&
@@ -68,8 +71,13 @@ namespace CancerTrace.Debugging
             {
                 yield return null;
             }
+            RequireTestPath(app.TutorialProgressPath);
+            RequireTestPath(app.SavePath);
             Require(app.IsReady, "CancerTraceApp did not become ready: " + app.ErrorMessage);
 
+            // Seed completion only in the explicitly isolated test progress file.
+            string tutorialError;
+            Require(app.TutorialProgress.TryMarkCompleted(out tutorialError), tutorialError);
             InvokeButton("NewShiftButton");
             yield return WaitForScene("CaseAnalysis");
             yield return null;
@@ -199,9 +207,27 @@ namespace CancerTrace.Debugging
             return false;
         }
 
+        private static string GetArgument(string name)
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            for (int i = 0; i + 1 < args.Length; i++) if (args[i] == name) return args[i + 1];
+            return UnityEditor.SessionState.GetString(
+                name == "-cancerTraceSavePath" ? "CancerTraceSmoke.SavePath" : "CancerTraceSmoke.TutorialPath", null);
+        }
+
+        private static void RequireTestPath(string path)
+        {
+            string root = Path.GetFullPath(Path.Combine(Path.GetTempPath(), "CancerTraceSmokeTests")) +
+                          Path.DirectorySeparatorChar;
+            Require(!string.IsNullOrEmpty(path) && Path.GetFullPath(path).StartsWith(root,
+                StringComparison.OrdinalIgnoreCase),
+                "Smoke runner requires explicit save and tutorial paths under " + root);
+        }
+
         private void CleanupTemporarySave()
         {
             if (app == null || string.IsNullOrEmpty(app.SavePath)) return;
+            RequireTestPath(app.SavePath);
             try
             {
                 if (File.Exists(app.SavePath)) File.Delete(app.SavePath);
@@ -235,3 +261,5 @@ namespace CancerTrace.Debugging
         }
     }
 }
+
+#endif
