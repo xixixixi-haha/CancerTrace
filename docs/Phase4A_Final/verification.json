@@ -1,0 +1,20 @@
+{
+  "unity/CancerTraceClient/Assets/Fonts/TMP/SourceHanSansSC-Regular SDF.asset": true,
+  "results/game_data/class_profiles.json": true,
+  "results/game_data/galaxy_nodes.json": true,
+  "results/game_data/game_cases.json": true,
+  "results/game_data/game_config.json": true,
+  "unity/CancerTraceClient/Assets/StreamingAssets/GameData/class_profiles.json": true,
+  "unity/CancerTraceClient/Assets/StreamingAssets/GameData/galaxy_nodes.json": true,
+  "unity/CancerTraceClient/Assets/StreamingAssets/GameData/game_cases.json": true,
+  "unity/CancerTraceClient/Assets/StreamingAssets/GameData/game_config.json": true,
+  "unity/CancerTraceClient/Assets/Scenes/CancerGalaxy.unity": true,
+  "unity/CancerTraceClient/Assets/Scenes/CaseAnalysis.unity": true,
+  "unity/CancerTraceClient/Assets/Scenes/MainMenu.unity": true,
+  "unity/CancerTraceClient/Assets/Scenes/ResultSummary.unity": true,
+  "unity/CancerTraceClient/Assets/Scenes/SampleScene.unity": true,
+  "unity/CancerTraceClient/Assets/Scenes/ShiftSummary.unity": true,
+  "unity/CancerTraceClient/Assets/Audio/BGM/forget_me_not_in_f_major_looped.ogg": true,
+  "unity/CancerTraceClient/Assets/Art/Icons/Common/icon_detective_hat.png": true,
+  "unity/CancerTraceClient/ProjectSettings/EditorBuildSettings.asset": true
+}

@@ -65,6 +65,7 @@
     <Compile Include="Assets\Editor\ShiftSummarySceneRebuilder.cs" />
     <Compile Include="Assets\Editor\GameMenuBgmPrefabUpdater.cs" />
     <Compile Include="Assets\Editor\MainMenuVisualValidation.cs" />
+    <Compile Include="Assets\Editor\WindowsReleaseSettings.cs" />
     <Compile Include="Assets\Editor\PhaseB5CameraValidation.cs" />
     <Compile Include="Assets\Editor\PhaseBSceneBuilder.cs" />
     <Compile Include="Assets\Editor\CaseAnalysisVisualBuilder.cs" />

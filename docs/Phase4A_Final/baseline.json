@@ -1,0 +1,23 @@
+{
+  "git_status": " M \"unity/CancerTraceClient/Assets/Fonts/TMP/SourceHanSansSC-Regular SDF.asset\"\n",
+  "hashes": {
+    "unity/CancerTraceClient/Assets/Fonts/TMP/SourceHanSansSC-Regular SDF.asset": "ce1eabff2f377e4c069bd133fc3991a7528afdc426a6d9c99649236c84e4c5fe",
+    "results/game_data/class_profiles.json": "c6774c96b285998e82e05ed190b69d2f6ffa81d395778ef66c7daaecdc847bbe",
+    "results/game_data/galaxy_nodes.json": "a120cdfb50600bb3ff0424eeb962ee50c8ae7b0036ec7ed6b3b4d879575ed419",
+    "results/game_data/game_cases.json": "16ef06b3ec70cf60cf72ea4f565945d568f298301726883b978af565efca9067",
+    "results/game_data/game_config.json": "a1d5755bdbb0ce321465447fdd93ae8d0e7a1dea10621a1f4dd0ad776513302a",
+    "unity/CancerTraceClient/Assets/StreamingAssets/GameData/class_profiles.json": "c6774c96b285998e82e05ed190b69d2f6ffa81d395778ef66c7daaecdc847bbe",
+    "unity/CancerTraceClient/Assets/StreamingAssets/GameData/galaxy_nodes.json": "a120cdfb50600bb3ff0424eeb962ee50c8ae7b0036ec7ed6b3b4d879575ed419",
+    "unity/CancerTraceClient/Assets/StreamingAssets/GameData/game_cases.json": "16ef06b3ec70cf60cf72ea4f565945d568f298301726883b978af565efca9067",
+    "unity/CancerTraceClient/Assets/StreamingAssets/GameData/game_config.json": "a1d5755bdbb0ce321465447fdd93ae8d0e7a1dea10621a1f4dd0ad776513302a",
+    "unity/CancerTraceClient/Assets/Scenes/CancerGalaxy.unity": "e1678534bde0ddeabcc1ca58096c678214b555744540257c90e69411594b0e00",
+    "unity/CancerTraceClient/Assets/Scenes/CaseAnalysis.unity": "980eb6f2613ca2ffba56b90574006d7ca492a0910aa637749e97c04f2f6d27eb",
+    "unity/CancerTraceClient/Assets/Scenes/MainMenu.unity": "0d25dc9921d487e57c88eb4f2ce16b226bffef232685a47ccf4cac106964e202",
+    "unity/CancerTraceClient/Assets/Scenes/ResultSummary.unity": "d4bb4dbc856b6c5a5144a8951ad7981a274107c54be39fdee05c3981c4213ef3",
+    "unity/CancerTraceClient/Assets/Scenes/SampleScene.unity": "7bf8159640e37e4a70ffbf25e3fe7058693686d56ee1149951e926e47caa7d94",
+    "unity/CancerTraceClient/Assets/Scenes/ShiftSummary.unity": "513497e2efdb5dc66078f0383841aac9088320d017c81c35df957bf7b636f9ec",
+    "unity/CancerTraceClient/Assets/Audio/BGM/forget_me_not_in_f_major_looped.ogg": "2b9b9fc512c34d52b999ed1fd7e01f960f830f3defc5d2241f6e02f8be81ef77",
+    "unity/CancerTraceClient/Assets/Art/Icons/Common/icon_detective_hat.png": "246eed516a873b024c170268bcaf44ad144d884f651ff138b65a46cf1c63ead1",
+    "unity/CancerTraceClient/ProjectSettings/EditorBuildSettings.asset": "0757ad3245155fc038221f049b81d1d5f042fdbf317507dcb97453db06f69407"
+  }
+}
