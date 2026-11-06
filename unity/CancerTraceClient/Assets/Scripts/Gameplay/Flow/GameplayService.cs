@@ -47,6 +47,8 @@ namespace CancerTrace.Gameplay.Flow
         /// <summary>
         /// Persists the current formal runtime state without exposing the runtime service to UI code.
         /// </summary>
+        public bool HasUnsavedProgress { get { return runtime.HasUnsavedProgress; } }
+
         public SaveOperationResult SaveNow()
         {
             return runtime.SaveNow();

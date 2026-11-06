@@ -515,22 +515,9 @@ namespace CancerTrace.Data.Save
             {
                 if (File.Exists(SavePath))
                 {
-                    try
-                    {
-                        DeleteIfPresent(backupPath);
-                        File.Replace(temporaryPath, SavePath, backupPath, true);
-                        DeleteIfPresent(backupPath);
-                    }
-                    catch (PlatformNotSupportedException)
-                    {
-                        File.Copy(temporaryPath, SavePath, true);
-                        File.Delete(temporaryPath);
-                    }
-                    catch (NotSupportedException)
-                    {
-                        File.Copy(temporaryPath, SavePath, true);
-                        File.Delete(temporaryPath);
-                    }
+                    // Fail closed if atomic replacement is unavailable; never truncate a valid save.
+                    DeleteIfPresent(backupPath);
+                    File.Replace(temporaryPath, SavePath, backupPath, true);
                 }
                 else
                 {

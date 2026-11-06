@@ -23,6 +23,8 @@ namespace CancerTrace.UI.GameMenu
         };
 
         private static GameMenuController instance;
+        private Button retrySaveButton;
+        private bool saveWarningVisible;
 
         [Header("Visibility")]
         [SerializeField] private GameObject menuEntryButton;
@@ -91,6 +93,7 @@ namespace CancerTrace.UI.GameMenu
 
         private void Update()
         {
+            RefreshSaveWarning();
             if (IsSupportedScene(SceneManager.GetActiveScene().name) && Input.GetKeyDown(KeyCode.Escape))
             {
                 if (IsOpen) CloseMenu();
@@ -117,6 +120,34 @@ namespace CancerTrace.UI.GameMenu
 
         private void WireControls()
         {
+            // Reuse the existing button art and TMP font without modifying the prefab.
+            retrySaveButton = Instantiate(resumeButton, resumeButton.transform.parent);
+            retrySaveButton.name = "RetrySaveButton";
+            RectTransform retryRect = (RectTransform)retrySaveButton.transform;
+            retryRect.anchoredPosition = new Vector2(0f, -405f);
+            retryRect.sizeDelta = new Vector2(230f, 52f);
+            Image retryImage = retrySaveButton.GetComponent<Image>();
+            if (retryImage != null)
+            {
+                retryImage.sprite = null;
+                retryImage.color = new Color32(246, 198, 142, 255);
+            }
+            GameObject label = new GameObject("Label", typeof(RectTransform));
+            label.transform.SetParent(retrySaveButton.transform, false);
+            TextMeshProUGUI text = label.AddComponent<TextMeshProUGUI>();
+            text.font = errorText.font;
+            text.color = errorText.color;
+            text.fontSize = 26f;
+            text.alignment = TextAlignmentOptions.Center;
+            text.text = "重试保存";
+            text.raycastTarget = false;
+            RectTransform rect = (RectTransform)label.transform;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
+            retrySaveButton.onClick = new Button.ButtonClickedEvent();
+            retrySaveButton.onClick.AddListener(RetrySave);
+            retrySaveButton.gameObject.SetActive(false);
             Button entry = menuEntryButton.GetComponent<Button>();
             entry.onClick.AddListener(OpenMenu);
             closeButton.onClick.AddListener(CloseMenu);
@@ -125,6 +156,25 @@ namespace CancerTrace.UI.GameMenu
             quitButton.onClick.AddListener(QuitGame);
             volumeSlider.onValueChanged.AddListener(SetBgmVolume);
             sfxCheckbox.onClick.AddListener(ToggleBgm);
+        }
+
+        private void RetrySave()
+        {
+            CancerTraceApp app = CancerTraceApp.Instance;
+            if (app != null && app.IsReady && app.Gameplay != null)
+                app.Gameplay.SaveNow();
+            RefreshSaveWarning();
+        }
+
+        private void RefreshSaveWarning()
+        {
+            CancerTraceApp app = CancerTraceApp.Instance;
+            bool failed = app != null && app.IsReady && app.Gameplay != null &&
+                          app.Gameplay.HasUnsavedProgress;
+            if (retrySaveButton != null) retrySaveButton.gameObject.SetActive(failed);
+            if (failed) ShowError("进度尚未保存");
+            else if (saveWarningVisible) ClearError();
+            saveWarningVisible = failed;
         }
 
         private void HandleActiveSceneChanged(Scene previous, Scene next)
