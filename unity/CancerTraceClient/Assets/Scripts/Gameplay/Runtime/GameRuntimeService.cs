@@ -32,6 +32,8 @@ namespace CancerTrace.Gameplay.Runtime
         }
 
         public GameRuntimeState CurrentState { get; private set; }
+        public bool HasUnsavedProgress { get; private set; }
+        public string LastSaveError { get; private set; }
 
         public bool TryStartNewShift(out string errorMessage)
         {
@@ -87,9 +89,9 @@ namespace CancerTrace.Gameplay.Runtime
         {
             if (CurrentState == null)
             {
-                return SaveOperationResult.Failed("Cannot save before Runtime State exists.");
+                return RecordSaveResult(SaveOperationResult.Failed("Cannot save before Runtime State exists."));
             }
-            return saves.Save(CurrentState);
+            return RecordSaveResult(saves.Save(CurrentState));
         }
 
         public bool CanAfford(InvestigationTool tool)
@@ -341,9 +343,16 @@ namespace CancerTrace.Gameplay.Runtime
             }
         }
 
+        private SaveOperationResult RecordSaveResult(SaveOperationResult result)
+        {
+            HasUnsavedProgress = !result.Success;
+            LastSaveError = result.Success ? null : result.ErrorMessage;
+            return result;
+        }
+
         private void AutoSave(string reason)
         {
-            SaveOperationResult result = saves.Save(CurrentState);
+            SaveOperationResult result = SaveNow();
             if (!result.Success)
             {
                 Debug.LogError("Automatic save failed after " + reason + ".\n" + result.ErrorMessage);

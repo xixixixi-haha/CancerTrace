@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace CancerTrace.Debugging
 
             ExecuteSmoke(
                 loadResult.Data,
-                Path.Combine(Application.persistentDataPath, SmokeSaveFileName),
+                Path.Combine(Path.GetTempPath(), "CancerTraceSmokeTests", SmokeSaveFileName),
                 true);
         }
 
@@ -51,7 +52,7 @@ namespace CancerTrace.Debugging
 
             ExecuteSmoke(
                 loadResult.Data,
-                Path.Combine(Application.persistentDataPath, SmokeSaveFileName),
+                Path.Combine(Path.GetTempPath(), "CancerTraceSmokeTests", SmokeSaveFileName),
                 false);
         }
 
@@ -69,6 +70,35 @@ namespace CancerTrace.Debugging
             {
                 SaveOperationResult cleanupBeforeTest = saveRepository.DeleteSave();
                 Require(cleanupBeforeTest.Success, cleanupBeforeTest.ErrorMessage);
+
+                // A directory at the .tmp path forces deterministic IO failure in an isolated path.
+                string failurePath = savePath + ".failure";
+                SaveDataRepository failingSaves = new SaveDataRepository(data.Cases, data.Config, failurePath);
+                GameRuntimeService retryRuntime = new GameRuntimeService(data.Cases, data.Config, failingSaves);
+                Directory.CreateDirectory(failurePath + ".tmp");
+                try
+                {
+                    string retryError;
+                    Require(retryRuntime.TryStartNewShift(out retryError), retryError);
+                    GameRuntimeState retained = retryRuntime.CurrentState;
+                    Require(retryRuntime.HasUnsavedProgress, "AutoSave failure was not retained.");
+                    Require(!retryRuntime.SaveNow().Success && retryRuntime.HasUnsavedProgress,
+                        "Failed retry cleared unsaved state.");
+                    Require(ReferenceEquals(retained, retryRuntime.CurrentState), "Retry replaced session.");
+                    Directory.Delete(failurePath + ".tmp");
+                    Require(retryRuntime.SaveNow().Success && !retryRuntime.HasUnsavedProgress,
+                        "Successful retry did not clear failure.");
+                    byte[] valid = File.ReadAllBytes(failurePath);
+                    Directory.CreateDirectory(failurePath + ".tmp");
+                    Require(!retryRuntime.SaveNow().Success, "Expected IO failure with existing save.");
+                    Require(Convert.ToBase64String(valid) == Convert.ToBase64String(File.ReadAllBytes(failurePath)),
+                        "Failed save changed valid bytes.");
+                }
+                finally
+                {
+                    if (Directory.Exists(failurePath + ".tmp")) Directory.Delete(failurePath + ".tmp");
+                    failingSaves.DeleteSave();
+                }
 
                 GameRuntimeService runtime = new GameRuntimeService(
                     data.Cases,
@@ -253,3 +283,5 @@ namespace CancerTrace.Debugging
         }
     }
 }
+
+#endif
