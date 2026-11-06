@@ -1,4 +1,14 @@
-# CancerTraceClient
+# CancerTraceClient 历史工程快照
+
+本目录是早期开发阶段的历史工程快照，保留用于追溯早期开发资料、资源和规划。
+
+- 当前正式 Unity 工程为仓库中的 `unity/CancerTraceClient/`，入口见 [正式工程](../CancerTraceClient/)。
+- 正式工程使用 **Unity 2021.3.45f2c1**，开发说明见 [Unity 客户端说明](../README.md)。
+- 不建议将本备份目录作为当前项目入口打开或继续开发。
+
+## 历史说明（原文保留）
+
+以下保留快照形成时的初始化建议和开发规划，其中的工程状态、Unity 6.3 版本建议及后续计划均属于当时记录。当前环境和入口以上述正式工程说明为准。
 
 这里是 CancerTrace 的 Unity 客户端主目录。目前仅提供目录骨架，尚未由 Unity Editor 生成完整项目文件。
 
