@@ -15,28 +15,25 @@ data/processed/*.gz
 results/models/*.pkl
 results/models/*.joblib
 
-# Unity
-unity/Library/
-unity/Temp/
-unity/Logs/
-unity/Obj/
-unity/UserSettings/
-unity/Build/
-unity/Builds/
+# Unity project caches and local builds
+/unity/*/Library/
+/unity/*/Temp/
+/unity/*/[Oo]bj/
+/unity/*/Logs/
+/unity/*/UserSettings/
+/unity/*/Build/
+/unity/*/Builds/
+/unity/Build/
+/unity/Builds/
+/unity/CancerTraceClient/*.log
 
-# Unity generated directories at any project depth
-Library/
-Temp/
-Obj/
-Logs/
-UserSettings/
-
-# Unity generated directories at any project depth
-Library/
-Temp/
-Obj/
-Logs/
-UserSettings/
+# Local IDE caches
+/.vs/
+/.idea/
+/unity/*/.vs/
+/unity/*/.idea/
+/unity/CancerTraceClient/*.csproj.user
+/unity/CancerTraceClient/*.suo
 
 # OS
 .DS_Store

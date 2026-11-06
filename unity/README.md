@@ -1,7 +1,16 @@
 # CancerTrace Unity 客户端
 
-正式工程为 `CancerTraceClient/`，使用 Unity 2021.3.45f2c1。已有五个正式场景及完整教程、调查、病例结果和 Shift 汇总流程。`CancerTraceClient_backup/` 是历史副本，请勿作为正式工程。
+## 开发环境
 
-从 MainMenu 运行；正式数据位于 Assets/StreamingAssets/GameData。已完成 Windows x64 / Mono 首次试构建，产物位于 `D:/Builds/CancerTrace/1.0.0-Windows-x64`。项目所有者已确认现有 EXE 的窗口模式运行验收通过，1920×1080 下显示正常；非 16:9 原生分辨率全屏显示不在已通过范围内，素材授权仍待核验。操作、存档和许可参见[根目录 README](../README.md)，设计记录见 [Docs/README.md](Docs/README.md)，历史规划不代表已实现功能。
+使用 Unity Hub 和 **Unity 2021.3.45f2c1** 打开正式工程 [CancerTraceClient/](CancerTraceClient/)。编辑器版本见 [ProjectVersion.txt](CancerTraceClient/ProjectSettings/ProjectVersion.txt)。`CancerTraceClient_backup/` 为历史副本。
 
-Assets/Scripts/Debug 中保留的四个 Smoke 测试脚本均由 UNITY_EDITOR 条件编译保护，不进入 Player；临时显示诊断脚本已移除。RuntimeSaveSmokeTest 与 CoreGameplaySmokeTest 使用系统临时目录 CancerTraceSmokeTests。Play Mode Launcher 为每次运行提供独立 save/tutorial 路径，退出 Play Mode 清除路径覆盖；不会清理正式存档。
+加载 [MainMenu.unity](CancerTraceClient/Assets/Scenes/MainMenu.unity) 后进入 Play Mode。[场景说明](CancerTraceClient/Assets/Scenes/README.md) 记录五个正式场景，运行数据位于 [Assets/StreamingAssets/GameData/](CancerTraceClient/Assets/StreamingAssets/GameData/)。设计与系统文档见 [Unity 开发文档](Docs/README.md)。
+
+## 已记录的验证范围
+
+- Phase 4A 的 Runtime/Save 和 Core Gameplay smoke 测试在独立临时工程中通过。该工程未加载正式字体、场景或 UI。正式脚本分别以 Editor 和 Player 编译条件完成编译检查。Play Mode UI Runner 的完整实机流程未在该阶段执行。[历史测试记录](../docs/Phase4A_Final/TEST_RESULTS.md)
+- 项目所有者已确认 Windows EXE 在 1920×1080 窗口模式下显示正常。非 16:9 原生分辨率全屏尚无对应的验收记录。
+
+## 测试入口与存档隔离
+
+`Assets/Scripts/Debug/` 中的四个 Smoke 脚本受 `UNITY_EDITOR` 条件编译保护。Runtime/Save 和 Core Gameplay 测试使用系统临时目录 `CancerTraceSmokeTests`。Play Mode Launcher 为每次测试单独覆盖正式进度和教程进度的路径，并在退出 Play Mode 时清除路径覆盖。

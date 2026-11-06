@@ -1,41 +1,45 @@
-# CancerTrace
+# CancerTrace v1.0
 
-CancerTrace 是以癌细胞转录组数据为线索的中文科研调查游戏。玩家结合初始线索、Gene Scan、Cancer Galaxy 与 AI Assistant 作出诊断，再查看病例结果和 Shift 汇总。
+CancerTrace 是一款基于癌细胞系转录组数据的中文科研调查游戏。玩家扮演调查员，通过基因线索、癌症星图和病例证据，在八类选项中作出诊断。游戏用于科普和教学。
 
-## 当前功能
+本项目仅用于科普与教学演示，不用于真实疾病诊断或临床医疗决策。
 
-- 首次正式调查前完成教程；教程与正式调查状态分离。
-- 每个 Shift 包含 10 个病例，共享 RP；诊断后进入结果页并继续下一病例。
-- 八类诊断选项、星图调查、证据展示、异常病例信息保护。
-- 本地存档、继续调查、损坏存档保护、设置菜单与跨场景循环 BGM。只使用 BGM，不添加 SFX。
+## 玩家下载与运行
 
-## 截图
+从 [GitHub Release（course-final）](https://github.com/xixixixi-haha/CancerTrace/releases/tag/course-final) 的 **Assets** 下载 Windows PC 游戏 ZIP。
 
-现有界面参考图见 [unity/Docs/References](unity/Docs/References)。这些是设计参考，尚无经过 v1.0 验收的正式游戏截图；发布前在此补充实机截图。
+1. 将 ZIP 完整解压到一个文件夹。
+2. 保持 `CancerTraceClient.exe`、`CancerTraceClient_Data/` 和同级运行依赖的位置不变。
+3. 双击 `CancerTraceClient.exe` 启动游戏。
 
-## 运行
+目标环境为 64 位 Windows 10/11、支持 DirectX 11 的显卡、键盘和鼠标。最低 CPU、内存和显存需求尚未实机测定。
 
-使用 Unity Hub 打开 `unity/CancerTraceClient`，选择 **Unity 2021.3.45f2c1**。从 `Assets/Scenes/MainMenu.unity` 进入 Play Mode。已完成 Windows x64 + Mono 首次试构建，输出目录为 `D:/Builds/CancerTrace/1.0.0-Windows-x64`。项目所有者已确认现有 EXE 通过窗口模式运行验收，1920×1080 下显示正常；该验收不代表非 16:9 原生分辨率全屏显示已通过，也不代表素材授权已完成。运行时保持 exe、同名 Data 目录和运行依赖在一起，启动 `CancerTraceClient.exe`。
+## 核心玩法
 
-Windows 目标：64 位 Windows 10/11、支持 DirectX 11 的显卡、键盘和鼠标。最低 CPU、内存与显存需求尚未实机测定，不作性能保证。
+- **完成教程。** 首次正式调查前需完成教程，教程进度与正式调查存档分开。
+- **调查病例。** 每个 Shift 包含 10 个病例，共享 RP。结合初始线索、Gene Scan、Cancer Galaxy、AI Assistant 和证据板缩小诊断范围。异常病例的部分信息受保护。
+- **提交诊断。** 在八类诊断选项中作出判断，查看病例结果，再继续下一个病例或查看 Shift 汇总。
+- **管理进度和设置。** 按 Esc 或点击右上角菜单按钮，可调整 BGM、返回主菜单或退出。出现“进度尚未保存”时可点击“重试保存”。退出前请确认重试成功，以免丢失当前进度。
 
-## 操作与流程
+Windows 本地存档位于 `%USERPROFILE%/AppData/LocalLow/DefaultCompany/CancerTraceClient/`。正式进度为 `cancertrace_save_v1.json`，教程进度为 `cancertrace_tutorial_progress_v1.json`，BGM 设置由 Unity PlayerPrefs 保存。
 
-鼠标点击菜单与调查工具，选择诊断后提交；结果页继续下一个病例，完成 Shift 后查看汇总。教程入口提供引导，首次正式调查受教程完成状态保护。Esc 或右上角菜单按钮打开/关闭设置，调整 BGM 开关与音量，可返回主菜单或退出。保存失败时菜单显示“进度尚未保存”，点击“重试保存”保存当前内存进度；保存失败期间退出进程仍会丢失未写入进度。
+## 开发者入口
 
-## 存档
+在 Unity Hub 中使用 **Unity 2021.3.45f2c1** 打开 `unity/CancerTraceClient/`，加载 `Assets/Scenes/MainMenu.unity` 并进入 Play Mode。环境和测试范围见 [Unity 客户端说明](unity/README.md)。
 
-Windows 默认路径：`%USERPROFILE%/AppData/LocalLow/DefaultCompany/CancerTraceClient/`。
-正式进度 `cancertrace_save_v1.json`，教程进度 `cancertrace_tutorial_progress_v1.json`。BGM 设置使用 Unity PlayerPrefs。保留 Company/Product 以维持原存档目录，勿手动覆盖存档。现有四个 Smoke 测试脚本仅在 Editor 编译，使用独立临时目录；临时显示诊断脚本已移除。
+客户端使用 Unity、C#、UGUI、TextMesh Pro 和 Newtonsoft.Json，Windows 版使用 x64 / Mono。数据分析与导出使用 Python。
 
-## 技术与目录
+| 路径 | 用途 |
+| --- | --- |
+| `unity/CancerTraceClient/` | 正式 Unity 工程，包含 `Assets/`、`Packages/` 和 `ProjectSettings/`。 |
+| `unity/Docs/` | 游戏设计、系统规格和客户端开发资料。 |
+| `data/`、`python/` | 数据来源说明与分析、导出流程。 |
+| `results/game_data/` | 冻结游戏数据，运行副本位于正式工程的 `Assets/StreamingAssets/GameData/`。 |
+| `docs/` | 项目文档索引和 Phase 4A 历史验收记录。 |
+| `unity/CancerTraceClient_backup/` | 历史工程副本。 |
 
-- Unity 2021.3、C#、UGUI、TextMesh Pro、Newtonsoft.Json；Windows x64 / Mono。
-- `unity/CancerTraceClient/`：正式客户端；`unity/Docs/`：设计与开发记录。
-- `data/`、`python/`：科学数据与 Python 分析；`results/game_data/`：冻结游戏数据，客户端副本位于 StreamingAssets/GameData。
-- `docs/Phase4A_Final/`：本轮保护基线、验证与发布前验收报告。
-- `unity/CancerTraceClient_backup/`：历史副本，不是运行入口。
+## 数据来源与素材授权
 
-## 许可与素材
+游戏数据源自 **Broad Institute DepMap Public 26Q1**。版本证据、输入文件和引用见 [数据来源](data/README.md)，冻结数据范围见 [游戏数据说明](results/game_data/README.md)。
 
-仓库尚未选择统一代码许可证，不能据此宣称开源授权已完成。第三方字体、音乐及待核验美术见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。美术来源未确认前，不应作为已获授权的素材发布。
+AI 生成图片、第三方字体、BGM 和软件依赖的说明统一见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。仓库尚未声明统一的代码许可证。
