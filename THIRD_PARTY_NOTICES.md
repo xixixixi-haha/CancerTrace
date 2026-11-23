@@ -1,6 +1,6 @@
 # Third-party notices
 
-本仓库没有统一的开源 LICENSE 文件；公开代码不等于获得再分发或商用许可。项目所有者需确定项目代码许可证。本清单不授予任何额外权利。
+[MIT 许可证](LICENSE)仅适用于 [LICENSE-SCOPE.md](LICENSE-SCOPE.md) 逐一列出的 CancerTrace 原创 Python 和 Unity C# 源文件。以下素材和依赖适用各自条款。本清单不授予任何额外权利。
 
 ## AI 生成图片
 

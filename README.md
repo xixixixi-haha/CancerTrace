@@ -42,4 +42,8 @@ Windows 本地存档位于 `%USERPROFILE%/AppData/LocalLow/DefaultCompany/Cancer
 
 游戏数据源自 **Broad Institute DepMap Public 26Q1**。版本证据、输入文件和引用见 [数据来源](data/README.md)，冻结数据范围见 [游戏数据说明](results/game_data/README.md)。
 
-AI 生成图片、第三方字体、BGM 和软件依赖的说明统一见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。仓库尚未声明统一的代码许可证。
+AI 生成图片、第三方字体、BGM 和软件依赖的说明统一见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+## License
+
+CancerTrace 原创 Python 和 Unity C# 源代码按 [MIT 许可证](LICENSE)授权，具体适用文件及排除项见 [LICENSE-SCOPE.md](LICENSE-SCOPE.md)。美术、音乐、字体、外部数据集、游戏数据、Unity 和第三方依赖及其他第三方素材均排除在授权范围之外。
